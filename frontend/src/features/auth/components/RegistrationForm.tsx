@@ -78,7 +78,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onChangeMode
 			)}
 
 			<TextField
-				label="Имя"
+				label="Имя пользователя"
 				value={username}
 				onChange={(e) => setUsername(e.target.value)}
 				fullWidth

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Menu, MenuItem, IconButton, Avatar } from '@mui/material';
 import {useAppDispatch} from '@shared/lib/hooks';
 import {logoutUser} from '@features/user/logoutUser.ts';
+import {Link as RouterLink} from 'react-router';
 
 type ProfileMenuProps = {
 	image: string;
@@ -54,7 +55,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ image }) => {
 				transformOrigin={{ horizontal: 'right', vertical: 'top' }}
 				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
 			>
-				<MenuItem onClick={handleProfile}>Профиль</MenuItem>
+				<MenuItem onClick={handleProfile} component={RouterLink} to="/profile">Профиль</MenuItem>
 				<MenuItem onClick={handleLogout}>Выйти</MenuItem>
 			</Menu>
 		</div>

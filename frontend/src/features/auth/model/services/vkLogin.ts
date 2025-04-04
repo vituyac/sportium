@@ -7,7 +7,7 @@ export const vkLogin = createAsyncThunk(
 	'auth/vkLogin',
 	async ({ access_token }: { access_token: string }, thunkAPI) => {
 		try {
-			const response = await api.post('/users/login/vk/', { access_token });
+			const response = await api.post('/users/login/vk/?lang=${i18next.language}', { access_token });
 			thunkAPI.dispatch(userActions.setAuthData(response.data));
 			tokenService.setTokens({
 				access: response.data.access,

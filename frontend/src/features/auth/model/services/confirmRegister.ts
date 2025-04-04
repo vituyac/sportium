@@ -5,7 +5,7 @@ export const confirmRegister = createAsyncThunk(
 	'auth/confirm-register',
 	async (confirmRegisterData: { email: string, code: string }, thunkAPI) => {
 		try {
-			const response = await api.post('/users/register/confirm/', confirmRegisterData);
+			const response = await api.post('/users/register/confirm/?lang=${i18next.language}', confirmRegisterData);
 			console.log(response);
 			return response.data;
 		} catch (e: any) {

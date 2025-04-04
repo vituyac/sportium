@@ -27,6 +27,7 @@ import {useSelector} from 'react-redux';
 import ProfileMenu from '@widgets/Header/ui/ProfileMenu.tsx';
 import {logoutUser} from '@features/user/logoutUser.ts';
 import {useAppDispatch} from '@shared/lib/hooks';
+import { useLocation } from 'react-router';
 
 export const Header = () => {
 	const authData = useSelector(getUserAuthData);
@@ -35,14 +36,15 @@ export const Header = () => {
 	const { mode } = useThemeContext();
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
+	const location = useLocation();
+	const currentPath = location.pathname;
 	const { t } = useTranslation();
 
 	const navLinks = [
-		{ label: t('Главная'), href: '#' },
-		{ label: t('О Нас'), href: '#' },
+		{ label: t('Главная'), href: '/' },
+		{ label: t('Тренировки'), href: '#' },
+		{ label: t('Питание'), href: '#' },
 		{ label: t('Контакты'), href: '#' },
-		{ label: t('Ссылка'), href: '#' },
 	];
 
 	const [scrolled, setScrolled] = useState(false);
@@ -80,11 +82,23 @@ export const Header = () => {
 
 						{!isMobile && (
 							<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-								{navLinks.map(({ label, href }) => (
-									<Link key={label} underline="hover" href={href} color="primary">
-										{label}
-									</Link>
-								))}
+								{navLinks.map(({ label, href }) => {
+									const isActive = currentPath === href;
+
+									return (
+										<Link
+											key={label}
+											underline="hover"
+											component={RouterLink}
+											to={href}
+											sx={{
+												textDecoration: isActive ? 'underline' : 'none',
+											}}
+										>
+											{label}
+										</Link>
+									);
+								})}
 							</Box>
 						)}
 					</Box>
@@ -142,16 +156,29 @@ export const Header = () => {
 									<Avatar src={authData.image} />
 									<ListItemText primary={authData.username} />
 								</ListItemButton>
-								<ListItemButton component={RouterLink} to="/auth/login" onClick={toggleDrawer}>
+								<ListItemButton component={RouterLink} to="/profile" onClick={toggleDrawer}>
 									<ListItemText primary="Профиль" />
 								</ListItemButton>
 							</>
 						)}
-						{navLinks.map(({ label, href }) => (
-							<ListItemButton key={label} component="a" href={href} onClick={toggleDrawer}>
-								<ListItemText primary={label} />
-							</ListItemButton>
-						))}
+						{navLinks.map(({ label, href }) => {
+							const isActive = currentPath === href;
+
+							console.log(currentPath);
+							console.log(href);
+
+							return (
+								<ListItemButton
+									key={label}
+									component={RouterLink}
+									to={href}
+									onClick={toggleDrawer}
+									selected={isActive}
+								>
+									<ListItemText primary={label} />
+								</ListItemButton>
+							);
+						})}
 						{ authData
 							?
 							<>

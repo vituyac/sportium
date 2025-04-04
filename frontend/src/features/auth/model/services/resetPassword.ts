@@ -5,7 +5,7 @@ export const resetPassword = createAsyncThunk(
 	'auth/resetPassword',
 	async (resetPasswordData: {email: string, code: string, password: string, confirm: string },  thunkAPI) => {
 		try {
-			const response = await api.post('/users/reset-password/', resetPasswordData );
+			const response = await api.post('/users/reset-password/?lang=${i18next.language}', resetPasswordData );
 			return response.data;
 		} catch (e: any) {
 			return thunkAPI.rejectWithValue(e.response.data);
