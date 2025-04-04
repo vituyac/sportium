@@ -1,10 +1,4 @@
-function App() {
+// App.tsx
+import { AppRouter } from './providers/router';
 
-  return (
-    <>
-      init app
-    </>
-  )
-}
-
-export default App
+export const App = () => <AppRouter />;

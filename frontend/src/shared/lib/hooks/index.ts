@@ -1,0 +1,1 @@
+export {useAppDispatch} from '@shared/lib/hooks/useAppDispatch.ts';
