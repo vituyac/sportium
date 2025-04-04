@@ -1,0 +1,83 @@
+services:
+  users-pg:
+    container_name: users-pg
+    image: postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+  volumes:
+    - users-pg-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+  users:
+    container_name: users-service
+    build: 
+      context: ./fastapi-apps/users
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      redis:
+        condition: service_started
+      users-pg:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - users-media:/app/media
+
+  mailer:
+    container_name: mailer-service
+    build: 
+      context: ./fastapi-apps/mailer
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  api-gateway:
+    container_name: api-gateway
+    build: 
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    restart: always
+
+  nginx:
+    container_name: nginx
+    build:
+      context: .               
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt/:/etc/letsencrypt/
+    depends_on:
+      - users
+
+volumes:
+  users-media:
+  users-pg-data:

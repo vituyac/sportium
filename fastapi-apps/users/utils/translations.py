@@ -1,0 +1,38 @@
+translations = {
+    "ru": {
+        "FIELD_REQUIRED": "Поле обязательно для заполнения",
+        "INVALID_EMAIL_OR_PASSWORD": "Неверный email или пароль",
+        "USER_INACTIVE": "Пользователь неактивен",
+        "TOKEN_INVALID": "Недействительный токен",
+        "TOKEN_IS_MISSING": "Токен не передан",
+        "CODE_EXPIRED_OR_INVALID": "Неверный или истёкший код",
+        "PASSWORDS_NOT_MATCH": "Пароли не совпадают",
+        "EMAIL_NOT_FOUND": "Email не найден",
+        "USER_EXIST_EMAIL": "Пользователь с таким email уже существует",
+        "USER_EXIST_USERNAME": "Имя пользователя уже занято",
+        "VK_SERVICE_NOT_AVAILABLE": "Сервис VK не отвечает",
+        "INVALID PASSWORD": "Неверный пароль",
+        "USER_EXIST_VK": "Данный VK ID уже привязан к другому аккаунту",
+        "VK_ERROR": "Произошла ошибка при регистрации пользователя по VK ID",
+        "INVALID_TOKEN_TYPE": "Недопустимый тип токена",
+        "INACTIVE_USER": "Неактивный пользователь"
+    },
+    "en": {
+        "FIELD_REQUIRED": "Field required",
+        "INVALID_EMAIL_OR_PASSWORD": "Invalid email or password",
+        "USER_INACTIVE": "User is inactive",
+        "TOKEN_INVALID": "Invalid token",
+        "TOKEN_IS_MISSING": "Token is missing",
+        "CODE_EXPIRED_OR_INVALID": "Invalid or expired code",
+        "PASSWORDS_NOT_MATCH": "Passwords do not match",
+        "EMAIL_NOT_FOUND": "Email not found",
+        "USER_EXIST_EMAIL": "User with this email already exists",
+        "USER_EXIST_USERNAME": "Username already taken",
+        "VK_SERVICE_NOT_AVAILABLE": "VK service not responding",
+        "INVALID PASSWORD": "Invalid password",
+        "USER_EXIST_VK": "This VK ID is already linked to another account",
+        "VK_ERROR": "An error occurred when registering a user using VK ID",
+        "INVALID_TOKEN_TYPE": "Invalid token type",
+        "INACTIVE_USER": "Inactive user"
+    },
+}
