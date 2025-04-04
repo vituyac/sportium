@@ -60,7 +60,7 @@ export const BlocksView: React.FC = () => {
 			gap: 4,
 			pb: 4
 		})}>
-			<Typography color={'secondary'} sx={{textAlign: 'center', fontWeight: 'bold'}} variant={'h4'}>{t("Что умеет Sportium?")}</Typography>
+			<Typography color={'secondary.dark'} sx={{textAlign: 'center', fontWeight: 'bold'}} variant={'h4'}>{t("Что умеет Sportium?")}</Typography>
 			{blocks}
 		</Container>
 	)

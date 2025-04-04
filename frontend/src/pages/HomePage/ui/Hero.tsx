@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Button, Container, Grid, Typography} from '@mui/material';
+import {Box, Button, Container, Grid, Stack, Typography} from '@mui/material';
 import greenCloudBottom from '@shared/assets/images/green-cloud2.png';
 import greenCloudTop from '@shared/assets/images/green-cloud.png';
 import GroupLines from '@shared/assets/images/group-lines.svg?react';
@@ -75,11 +75,13 @@ export const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
 						display: 'flex',
 						flexDirection: 'column',
 						justifyContent: 'center',
-						gap: 4
+						position: 'relative'
 					}}>
-						<Typography variant={'h4'} color={'primary'}>{t("Sportium - твой персональный гид в мире фитнеса")}</Typography>
-						<Typography color={'primary'}>{t("Ты ставишь цель — мы выдаём готовую программу на неделю. Тренировки, питание, рекомендации — всё под тебя и без лишних заморочек. Регистрируйся и начинай путь к лучшей версии себя!")}</Typography>
-						<Button onClick={onScrollDown} disableElevation variant={'contained'} color={'primary'} sx={{ alignSelf: 'flex-start' }} endIcon={<BoltIcon />}>{t("Подробнее")}</Button>
+						<Stack spacing={4} sx={{position: 'absolute', top: '41%'}}>
+							<Typography variant={'h4'} color={'primary'}>{t("Sportium - твой персональный гид в мире фитнеса")}</Typography>
+							<Typography color={'primary'}>{t("Ты ставишь цель — мы выдаём готовую программу на неделю. Тренировки, питание, рекомендации — всё под тебя и без лишних заморочек. Регистрируйся и начинай путь к лучшей версии себя!")}</Typography>
+							<Button onClick={onScrollDown} disableElevation variant={'contained'} color={'primary'} sx={{ alignSelf: 'flex-start' }} endIcon={<BoltIcon />}>{t("Подробнее")}</Button>
+						</Stack>
 					</Grid>
 					<Grid size={6} sx={{
 						display: {
@@ -98,8 +100,9 @@ export const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
 							zIndex: -1
 						}} />
 						<SportItemSvg style={{ position: 'absolute',
+							top: '5%',
 							maxWidth: 'auto',
-							height: '100%',
+							height: '80%',
 							zIndex: -2
 						}}/>
 					</Grid>
