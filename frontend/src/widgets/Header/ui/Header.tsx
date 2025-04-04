@@ -163,10 +163,6 @@ export const Header = () => {
 						)}
 						{navLinks.map(({ label, href }) => {
 							const isActive = currentPath === href;
-
-							console.log(currentPath);
-							console.log(href);
-
 							return (
 								<ListItemButton
 									key={label}

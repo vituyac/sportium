@@ -3,8 +3,21 @@ import { userReducer } from '@entities/User/model/slices';
 import { authReducer } from '@features/auth/model/slice';
 import { NavigateFunction } from 'react-router';
 
-export const createStore = (navigate: NavigateFunction) =>
-	configureStore({
+type ExtraArg = {
+	navigate: NavigateFunction;
+};
+
+// делаем глобальный extraArg, чтобы потом можно было "вживить" navigate
+export const extraArg: ExtraArg = {
+	navigate: () => {}, // ← заглушка
+};
+
+export const createStore = (navigate?: NavigateFunction) => {
+	if (navigate) {
+		extraArg.navigate = navigate;
+	}
+
+	return configureStore({
 		reducer: {
 			user: userReducer,
 			auth: authReducer,
@@ -12,10 +25,11 @@ export const createStore = (navigate: NavigateFunction) =>
 		middleware: (getDefaultMiddleware) =>
 			getDefaultMiddleware({
 				thunk: {
-					extraArgument: { navigate },
+					extraArgument: extraArg,
 				},
 			}),
 	});
+};
 
 export type RootState = ReturnType<ReturnType<typeof createStore>['getState']>;
 export type AppDispatch = ReturnType<typeof createStore>['dispatch'];

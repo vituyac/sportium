@@ -1,25 +1,29 @@
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router';
-import { Provider } from 'react-redux';
-import { createStore } from '@app/providers/StoreProvider/config/store';
-import { HomePage } from '@pages/HomePage';
-import { AuthPage } from '@pages/AuthPage';
-import { ProfilePage } from '@pages/ProfilePage';
-import { ProfileMain } from '@pages/ProfilePage/ui/ProfileMain';
-import { ProfileFavorites } from '@pages/ProfilePage/ui/ProfileFavorites';
+import {BrowserRouter, Route, Routes, useNavigate} from 'react-router';
+import {Provider} from 'react-redux';
+import {createStore, extraArg} from '@app/providers/StoreProvider/config/store';
+import {HomePage} from '@pages/HomePage';
+import {AuthPage} from '@pages/AuthPage';
+import {ProfilePage} from '@pages/ProfilePage';
+import {ProfileMain} from '@pages/ProfilePage/ui/ProfileMain';
+import {ProfileFavorites} from '@pages/ProfilePage/ui/ProfileFavorites';
 import {AuthProvider} from '@app/providers/AuthProvider/ui/AuthProvider.tsx';
 import {ThemeProvider} from '@app/providers/ThemeProvider';
+import {useEffect} from 'react';
 
-export const AppRouter = () => {
-	return (
-		<BrowserRouter>
-			<WithStore />
-		</BrowserRouter>
-	);
-};
+const store = createStore();
 
-const WithStore = () => {
+export const AppRouter = () => (
+	<BrowserRouter>
+		<InjectNavigate />
+	</BrowserRouter>
+);
+
+const InjectNavigate = () => {
 	const navigate = useNavigate();
-	const store = createStore(navigate);
+
+	useEffect(() => {
+		extraArg.navigate = navigate;
+	}, [navigate]);
 
 	return (
 		<Provider store={store}>

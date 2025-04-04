@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { tokenService } from '@shared/lib/tokenService/tokenService';
 import { api } from '@shared/api/base';
 import { userActions } from '@entities/User/model/slices';
 import { LoadingPage } from '@pages/LoadingPage/LoadingPage';
+import {getUserAuthData} from '@entities/User/model/selectors.ts';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const dispatch = useDispatch();
+	const authData = useSelector(getUserAuthData);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const initAuth = async () => {
+			if (authData) {
+				setIsLoading(false);
+				return;
+			}
+
 			if (tokenService.isLogoutInProgress()) {
 				tokenService.clearLogoutInProgress();
 				setIsLoading(false);
@@ -31,7 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		};
 
 		initAuth();
-	}, [dispatch]);
+	}, [dispatch, authData]);
 
 	if (isLoading) return <LoadingPage />;
 	return <>{children}</>;
