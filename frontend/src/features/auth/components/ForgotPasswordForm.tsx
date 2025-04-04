@@ -64,7 +64,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onChange
 				helperText={error?.email}
 			/>
 			<Stack direction="row" spacing={2}>
-				<Button type="submit"
+				<Button
 				        variant="contained"
 				        color="primary"
 				        fullWidth

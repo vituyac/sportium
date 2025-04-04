@@ -3,8 +3,8 @@ import {Box, Button, Container, Grid, Stack, Typography} from '@mui/material';
 import greenCloudBottom from '@shared/assets/images/green-cloud2.png';
 import greenCloudTop from '@shared/assets/images/green-cloud.png';
 import GroupLines from '@shared/assets/images/group-lines.svg?react';
-import SportWomenSvg from '@shared/assets/images/sport-women.svg?react';
 import SportItemSvg from '@shared/assets/images/sport-item.svg?react';
+import SportWomenSvg from '@shared/assets/images/sport-women.svg?react';
 import {useTranslation} from 'react-i18next';
 import BoltIcon from '@mui/icons-material/Bolt';
 
