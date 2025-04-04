@@ -45,10 +45,11 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ image }) => {
 				disableScrollLock
 				PaperProps={{
 					elevation: 3,
-					sx: {
+					sx: (theme) => ({
 						mt: 1.5,
 						minWidth: 180,
-					},
+						backgroundColor: theme.palette.background.default,
+					}),
 				}}
 				transformOrigin={{ horizontal: 'right', vertical: 'top' }}
 				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
