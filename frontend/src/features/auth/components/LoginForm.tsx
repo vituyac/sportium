@@ -18,12 +18,14 @@ import {useAppDispatch} from '@shared/lib/hooks';
 import {login} from '@features/auth/model/services/login';
 import {VKLoginButton} from '@features/auth/ui/VKLoginButton.tsx';
 import {useNavigate} from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 interface LoginFormProps {
 	onChangeMode: (mode: 'login' | 'register' | 'reset') => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onChangeMode }) => {
+	const { t } = useTranslation();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
@@ -45,11 +47,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onChangeMode }) => {
 	};
 
 	const handleVKLoginSuccess = (data: any) => {
-		console.log('VK авторизация успешна:', data);
+		console.log(t('VK авторизация успешна:'), data);
 	};
 
 	const handleVKLoginError = (error: any) => {
-		console.error('Ошибка VK авторизации:', error);
+		console.error(t('Ошибка VK авторизации:'), error);
 	};
 
 	const togglePasswordVisibility = () => {
@@ -69,7 +71,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onChangeMode }) => {
 			}}
 		>
 			<Typography variant={'h4'} sx={{ fontWeight: 'bold' }}>
-				Вход
+				{t("Вход")}
 			</Typography>
 
 			{error?.detail && (
@@ -77,7 +79,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onChangeMode }) => {
 			)}
 
 			<TextField
-				label="Почта"
+				label={t("Почта")}
 				size="small"
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
@@ -87,7 +89,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onChangeMode }) => {
 			/>
 
 			<TextField
-				label="Пароль"
+				label={t("Пароль")}
 				type={showPassword ? 'text' : 'password'}
 				size="small"
 				value={password}
@@ -112,14 +114,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onChangeMode }) => {
 					onLoginError={handleVKLoginError}
 				/>
 				<Button type="submit" variant="contained" color="secondary" fullWidth disableElevation>
-					{loading ? <CircularProgress size={24} /> : 'Войти'}
+					{loading ? <CircularProgress size={24} /> : t('Войти')}
 				</Button>
 			</Stack>
 
 			<Typography variant="body2">
-				Забыли пароль? Не проблема!{' '}
+				{t("Забыли пароль? Не проблема!")}{' '}
 				<Link component="button" onClick={() => onChangeMode('reset')}>
-					Восстановить
+					{t("Восстановить")}
 				</Link>
 			</Typography>
 		</Box>

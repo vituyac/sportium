@@ -4,6 +4,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '@app/providers/StoreProvider/config/store.ts';
 import Alert from '@mui/material/Alert';
 import {Visibility, VisibilityOff} from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 
 interface ResetPasswordFormProps {
 	email: string;
@@ -12,6 +13,7 @@ interface ResetPasswordFormProps {
 }
 
 export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onSubmit, email, onChangeMode }) => {
+	const { t } = useTranslation();
 	const [code, setCode] = useState('');
 	const [password, setPassword] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
@@ -39,12 +41,12 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onSubmit, 
 
 	return (
 		<Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-			<Typography variant="h5">Восстановление пароля</Typography>
+			<Typography variant="h5">{t("Восстановление пароля")}</Typography>
 			{error?.detail && (
 				<Alert severity="error">{error.detail}</Alert>
 			)}
 			<TextField
-				label="Код из email"
+				label={t("Код из email")}
 				value={code}
 				onChange={(e) => setCode(e.target.value)}
 				fullWidth
@@ -53,7 +55,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onSubmit, 
 				helperText={error?.code}
 			/>
 			<TextField
-				label="Пароль"
+				label={t("Пароль")}
 				type={showPassword ? 'text' : 'password'}
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
@@ -73,7 +75,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onSubmit, 
 			/>
 
 			<TextField
-				label="Подтверждение пароля"
+				label={t("Подтверждение пароля")}
 				type={showConfirmPassword ? 'text' : 'password'}
 				value={confirm}
 				onChange={(e) => setConfirm(e.target.value)}
@@ -92,7 +94,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onSubmit, 
 				}}
 			/>
 			<Button type="submit" variant="contained" fullWidth>
-				{loading ? <CircularProgress size={24} /> : 'Подтвердить'}
+				{loading ? <CircularProgress size={24} /> : t('Подтвердить')}
 			</Button>
 		</Box>
 	);

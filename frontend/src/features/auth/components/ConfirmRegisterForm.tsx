@@ -3,6 +3,8 @@ import {Box, Button, CircularProgress, TextField, Typography} from '@mui/materia
 import {useSelector} from 'react-redux';
 import {RootState} from '@app/providers/StoreProvider/config/store.ts';
 import Alert from '@mui/material/Alert';
+import { T } from 'node_modules/react-router/dist/development/fog-of-war-BjgPfDmv.d.mts';
+import { useTranslation } from 'react-i18next';
 
 interface EmailVerificationFormProps {
 	email: string;
@@ -11,6 +13,7 @@ interface EmailVerificationFormProps {
 }
 
 export const ConfirmRegisterForm: React.FC<EmailVerificationFormProps> = ({ onSubmit, email, onChangeMode }) => {
+	const { t } = useTranslation();
 	const [code, setCode] = useState('');
 
 	const { user, loading, error } = useSelector((state: RootState) => state.auth.confirm);
@@ -34,12 +37,12 @@ export const ConfirmRegisterForm: React.FC<EmailVerificationFormProps> = ({ onSu
 
 	return (
 		<Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-			<Typography variant="h5">{`Код подтверждения отправлен на ${email}`}</Typography>
+			<Typography variant="h5">{`${t('Код подтверждения отправлен на')} ${email}`}</Typography>
 			{error?.detail && (
 				<Alert severity="error">{error.detail}</Alert>
 			)}
 			<TextField
-				label="Код из email"
+				label={t("Код из email")}
 				value={code}
 				onChange={(e) => setCode(e.target.value)}
 				fullWidth
@@ -48,7 +51,7 @@ export const ConfirmRegisterForm: React.FC<EmailVerificationFormProps> = ({ onSu
 				helperText={error?.code}
 			/>
 			<Button type="submit" variant="contained" fullWidth>
-				{loading ? <CircularProgress size={24} /> : 'Подтвердить'}
+				{loading ? <CircularProgress size={24} /> : t('Подтвердить')}
 			</Button>
 		</Box>
 	);

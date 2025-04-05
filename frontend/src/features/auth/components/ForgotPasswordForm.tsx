@@ -8,12 +8,14 @@ import {forgotPassword} from '@features/auth/model/services/forgotPassword.ts';
 import Alert from '@mui/material/Alert';
 import {ResetPasswordForm} from '@features/auth/components/ResetPasswordForm.tsx';
 import {resetPassword} from '@features/auth/model/services/resetPassword.ts';
+import { useTranslation } from 'react-i18next';
 
 interface ForgotPasswordFormProps {
 	onChangeMode: (mode: 'login' | 'register' | 'reset') => void;
 }
 
 export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onChangeMode }) => {
+	const { t } = useTranslation();
 	const [email, setEmail] = useState('');
 	const [isResetPassword, setIsResetPassword] = useState(false)
 	const { loading, error } = useSelector((state: RootState) => state.auth.forgotPassword);
@@ -28,9 +30,9 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onChange
 		try {
 			const response = await dispatch(forgotPassword({email: email})).unwrap();
 			setIsResetPassword(true);
-			console.log('Успешно!', response);
+			console.log(t('Успешно!'), response);
 		} catch (err) {
-			console.error('Ошибка!', err);
+			console.error(t('Ошибка!'), err);
 		}
 	};
 
@@ -50,12 +52,12 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onChange
 			textAlign: 'center',
 			width: '100%'
 		}}>
-			<Typography variant={'h4'} sx={{ fontWeight: 'bold' }}>Восстановление пароля</Typography>
+			<Typography variant={'h4'} sx={{ fontWeight: 'bold' }}>{t("Восстановление пароля")}</Typography>
 			{error?.detail && (
 				<Alert severity="error">{error.detail}</Alert>
 			)}
 			<TextField
-				label="Введите ваш Email"
+				label={t("Введите ваш Email")}
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
 				fullWidth
@@ -75,7 +77,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onChange
 					Назад
 				</Button>
 				<Button type="submit" variant="contained" color="secondary" fullWidth disableElevation>
-					{loading ? <CircularProgress size={24} /> : 'Восстановить'}
+					{loading ? <CircularProgress size={24} /> : t('Восстановить')}
 				</Button>
 			</Stack>
 		</Box>

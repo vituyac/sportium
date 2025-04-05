@@ -28,6 +28,31 @@
       "Имя": "Nickname",
       "Почта": "EMail",
       "Сообщение": "Message",
-      "Отправить": "Send"
+      "Отправить": "Send",
+
+      "Добро пожаловать!":"Welcome!",
+      "С возвращением!":"Good to see you again!",
+      "Для доступа к системе пройдите быструю регистрацию. Это откроет все функции и возможности сервиса.":"To access the system, go through a quick registration. This will unlock all the functions and features of the service.",
+      "Если вы уже с нами, просто войдите в свой аккаунт. Если нет — самое время зарегистрироваться!":"If you are already with us, just log in to your account. If not, it's time to register!",
+      "Войти":"Log In",
+      "Успешный вход через VK":"Successful login via VK",
+
+      "Код подтверждения отправлен на":"The confirmation code has been sent to",
+      "Код из email":"The code from the email",
+      "Подтвердить":"Confirm",
+      "Успешно!":"Successfully!",
+      "Ошибка!":"Error!",
+      "Восстановление пароля":"Password Recovery",
+      "Введите ваш Email":"Enter your Email",
+      "Восстановить":"Recover",
+      "VK авторизация успешна:":"VK authorization is successful:",
+      "Ошибка VK авторизации:":"VK authorization error:",
+      "Пароль":"Password",
+      "Забыли пароль? Не проблема!":"Forgot your password? Not a problem!",
+      "Имя пользователя":"User Name",
+      "Подтверждение пароля":"Password confirmation",
+      "":"",
+      "":"",
+      "":""
 
 }

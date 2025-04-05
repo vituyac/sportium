@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, Button, Typography, useTheme} from '@mui/material';
 import {AuthMode} from './AuthPanel';
+import { useTranslation } from 'react-i18next';
 
 interface AuthSwitcherProps {
 	mode: AuthMode;
@@ -8,15 +9,16 @@ interface AuthSwitcherProps {
 }
 
 const AuthSwitcher: React.FC<AuthSwitcherProps> = ({ mode, onModeChange }) => {
+	const { t } = useTranslation();
 	const handleClick = () => {
 		onModeChange(mode !== 'register' ? 'register' : 'login');
 	};
 
-	const title = mode !== 'register' ? 'Добро пожаловать!' : 'С возвращением!';
+	const title = mode !== 'register' ? t('Добро пожаловать!') : t('С возвращением!');
 	const description = mode !== 'register'
-		? 'Для доступа к системе пройдите быструю регистрацию. Это откроет все функции и возможности сервиса.'
-		: 'Если вы уже с нами, просто войдите в свой аккаунт. Если нет — самое время зарегистрироваться!';
-	const buttonText = mode !== 'register' ? 'Регистрация' : 'Войти';
+		? t('Для доступа к системе пройдите быструю регистрацию. Это откроет все функции и возможности сервиса.')
+		: t('Если вы уже с нами, просто войдите в свой аккаунт. Если нет — самое время зарегистрироваться!');
+	const buttonText = mode !== 'register' ? t('Регистрация') : t('Войти');
 	const theme = useTheme();
 
 	return (

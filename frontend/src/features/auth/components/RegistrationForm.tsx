@@ -9,12 +9,14 @@ import {confirmRegister} from '@features/auth/model/services/confirmRegister.ts'
 import {useAppDispatch} from '@shared/lib/hooks';
 import {register} from '@features/auth/model/services/register.ts';
 import {VKLoginButton} from '@features/auth/ui/VKLoginButton.tsx';
+import { useTranslation } from 'react-i18next';
 
 interface RegistrationFormProps {
 	onChangeMode: (mode: 'login' | 'register' | 'reset') => void;
 }
 
 export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onChangeMode }) => {
+	const { t } = useTranslation();
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -27,11 +29,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onChangeMode
 	const dispatch = useAppDispatch();
 
 	const handleVKLoginSuccess = (data: any) => {
-		console.log('VK авторизация успешна:', data);
+		console.log(t('VK авторизация успешна:'), data);
 	};
 
 	const handleVKLoginError = (error: any) => {
-		console.error('Ошибка VK авторизации:', error);
+		console.error(t('Ошибка VK авторизации:'), error);
 	};
 
 	const handleRegister = (username: string, email: string, password: string, confirm: string) => {
@@ -70,7 +72,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onChangeMode
 			}}
 		>
 			<Typography variant={'h4'} sx={{ fontWeight: 'bold' }}>
-				Регистрация
+				{t("Регистрация")}
 			</Typography>
 
 			{error?.detail && (
@@ -78,7 +80,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onChangeMode
 			)}
 
 			<TextField
-				label="Имя пользователя"
+				label={t("Имя пользователя")}
 				value={username}
 				onChange={(e) => setUsername(e.target.value)}
 				fullWidth
@@ -98,7 +100,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onChangeMode
 			/>
 
 			<TextField
-				label="Пароль"
+				label={t("Пароль")}
 				type={showPassword ? 'text' : 'password'}
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
@@ -118,7 +120,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onChangeMode
 			/>
 
 			<TextField
-				label="Подтверждение пароля"
+				label={t("Подтверждение пароля")}
 				type={showConfirmPassword ? 'text' : 'password'}
 				value={confirm}
 				onChange={(e) => setConfirm(e.target.value)}
@@ -143,7 +145,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onChangeMode
 					onLoginError={handleVKLoginError}
 				/>
 				<Button type="submit" variant="contained" color="secondary" fullWidth disableElevation>
-					{loading ? <CircularProgress size={24} /> : 'Регистрация'}
+					{loading ? <CircularProgress size={24} /> : t('Регистрация')}
 				</Button>
 			</Stack>
 		</Box>
