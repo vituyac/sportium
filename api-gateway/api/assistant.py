@@ -26,7 +26,7 @@ async def get_plan(request: Request, authorization: str = Header(None)):
     body = await request.json()
 
     json_response = {
-        "id": payload["sub"],
+        "user_id": payload["sub"],
         "week": body.get("week")
     }
 
