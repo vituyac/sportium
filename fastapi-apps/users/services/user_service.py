@@ -11,6 +11,7 @@ from utils.jwt_auth import generate_code, hash_password, validate_password
 from .token_service import create_access_token, create_refresh_token
 from . import token_service as token_crud
 from core.config import settings
+from utils.calculate_fat import *
 
 from utils.exceptions import AppError
 
@@ -69,7 +70,31 @@ async def get_user_info(credentials, session: AsyncSession):
     if isinstance(user_dict.get("gender"), str):
         user_dict["gender"] = GenderEnum(user_dict["gender"])
 
-    return UserSchema.model_validate(user_dict)
+    user_schema = UserSchema.model_validate(user_dict)
+    result = user_schema.model_dump()
+
+    age = None
+    if result.get("date_of_birth"):
+        age = calculate_age(result["date_of_birth"])
+        result["age"] = age
+
+    if result.get("weight") and result.get("height"):
+        try:
+            bmi = calculate_bmi(result["weight"], result["height"])
+            result["imt"] = bmi
+
+            if age and result.get("gender"):
+                result["fat"] = calculate_body_fat(bmi, age, result["gender"])
+            else:
+                result["fat"] = None
+        except Exception:
+            result["imt"] = None
+            result["fat"] = None
+    else:
+        result["imt"] = None
+        result["fat"] = None
+
+    return result
 
 async def update_user_avatar(credentials, file, session: AsyncSession):
     user = await token_crud.get_current_active_auth_user(token_crud.ACCESS_TOKEN_TYPE, credentials, session)
