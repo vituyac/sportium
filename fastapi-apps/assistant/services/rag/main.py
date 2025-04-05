@@ -15,7 +15,7 @@ from langchain.schema import Document
 import asyncio
 import aiofiles
 
-load_dotenv()
+load_dotenv("./services/rag/")
 
 async def create_chain(template):
     llm = YandexGPT(
