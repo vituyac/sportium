@@ -157,7 +157,7 @@ export const Header = () => {
 									<ListItemText primary={authData.username} />
 								</ListItemButton>
 								<ListItemButton component={RouterLink} to="/profile" onClick={toggleDrawer}>
-									<ListItemText primary="Профиль" />
+									<ListItemText primary={t("Профиль")} />
 								</ListItemButton>
 							</>
 						)}
@@ -182,16 +182,16 @@ export const Header = () => {
 									dispatch(logoutUser());
 									toggleDrawer();
 								}}>
-									<ListItemText primary="Выход" />
+									<ListItemText primary={t("Выход")} />
 								</ListItemButton>
 							</>
 							:
 							<>
 								<ListItemButton component={RouterLink} to="/auth/register" onClick={toggleDrawer}>
-									<ListItemText primary="Регистрация" />
+									<ListItemText primary={t("Регистрация")} />
 								</ListItemButton>
 								<ListItemButton component={RouterLink} to="/auth/login">
-									<ListItemText primary="Вход" />
+									<ListItemText primary={t("Вход")} />
 								</ListItemButton>
 							</>
 					}
