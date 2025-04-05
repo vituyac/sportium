@@ -16,7 +16,7 @@ from fastapi import WebSocket, WebSocketDisconnect, APIRouter
 from utils.jwt_decode import *
 
 def register_ws_routes(app):
-    @app.websocket("/ws/plan/")
+    @app.websocket('/ws/plan/')
     async def proxy_ws_with_auth(websocket: WebSocket):
         await websocket.accept()
 
