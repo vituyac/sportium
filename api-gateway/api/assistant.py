@@ -94,7 +94,7 @@ async def proxy_docs(request: Request):
 
     modified_html = re.sub(
         r'url\s*:\s*[\'"]/openapi\.json[\'"]',
-        'url: "/api/users/openapi.json"',
+        'url: "/api/assistant/openapi.json"',
         response.text
     )
 
