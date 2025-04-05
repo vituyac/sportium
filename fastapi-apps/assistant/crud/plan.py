@@ -1,10 +1,21 @@
 from sqlalchemy import select, delete
 from sqlalchemy.orm import selectinload
+from datetime import date
 from core.models import (
     WeeklyPlan, DayPlan, Meal, Dish,
     WorkoutCategory, WorkoutTask,
     WeekTypeEnum
 )
+
+WEEKDAYS = {
+    0: "monday",
+    1: "tuesday",
+    2: "wednesday",
+    3: "thursday",
+    4: "friday",
+    5: "saturday",
+    6: "sunday",
+}
 
 async def save_weekly_plan_to_db(user_id: int, plan: dict, week_type: WeekTypeEnum, session):
     existing_plan_result = await session.execute(
@@ -147,5 +158,87 @@ async def get_plan(session, user_id: int, week: str, include_ids: bool = False) 
             "friday": serialize_day(weekly_plan_obj.friday),
             "saturday": serialize_day(weekly_plan_obj.saturday),
             "sunday": serialize_day(weekly_plan_obj.sunday),
+        }
+    }
+
+async def get_today_plan(session, user_id: int, week: str = "this", include_ids: bool = False) -> dict:
+    week_type = WeekTypeEnum.this_week if week == "this" else WeekTypeEnum.next_week
+    today_name = WEEKDAYS[date.today().weekday()]
+
+    result = await session.execute(
+        select(WeeklyPlan)
+        .where(WeeklyPlan.user_id == user_id, WeeklyPlan.week_type == week_type)
+        .options(
+            selectinload(getattr(WeeklyPlan, today_name)).selectinload(DayPlan.meals).selectinload(Meal.dishes),
+            selectinload(getattr(WeeklyPlan, today_name)).selectinload(DayPlan.workouts).selectinload(WorkoutCategory.tasks),
+        )
+    )
+
+    weekly_plan_obj = result.scalar_one_or_none()
+    if not weekly_plan_obj:
+        return {"detail": "План на сегодня не найден"}
+
+    today_plan: DayPlan = getattr(weekly_plan_obj, today_name)
+
+    total_dishes = 0
+    done_dishes = 0
+    total_tasks = 0
+    done_tasks = 0
+
+    def serialize_day(day: DayPlan) -> dict:
+        nonlocal total_dishes, done_dishes, total_tasks, done_tasks
+
+        meals_serialized = {}
+        for meal in day.meals:
+            dishes = []
+            for d in meal.dishes:
+                total_dishes += 1
+                if d.is_done:
+                    done_dishes += 1
+                dish_obj = {
+                    **({"id": d.id} if include_ids else {}),
+                    "dish": d.dish,
+                    "calories": d.calories,
+                    **({"is_done": d.is_done} if include_ids else {})
+                }
+                dishes.append(dish_obj)
+            meals_serialized[meal.type] = dishes
+
+        workouts_serialized = []
+        for wc in day.workouts:
+            tasks = []
+            for t in wc.tasks:
+                total_tasks += 1
+                if t.is_done:
+                    done_tasks += 1
+                task_obj = {
+                    **({"id": t.id} if include_ids else {}),
+                    "task": t.task,
+                    "burned_calories": t.burned_calories,
+                    **({"is_done": t.is_done} if include_ids else {})
+                }
+                tasks.append(task_obj)
+            workouts_serialized.append({
+                "category": wc.category,
+                "tasks": tasks
+            })
+
+        return {
+            "meals": meals_serialized,
+            "workout": workouts_serialized
+        }
+
+    plan_data = serialize_day(today_plan)
+
+    meal_progress = int((done_dishes / total_dishes) * 100) if total_dishes else 0
+    workout_progress = int((done_tasks / total_tasks) * 100) if total_tasks else 0
+
+    return {
+        "day": today_name,
+        "date": str(date.today()),
+        "plan": plan_data,
+        "progress": {
+            "meals": meal_progress,
+            "workout": workout_progress
         }
     }

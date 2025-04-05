@@ -37,3 +37,25 @@ async def get_plan(request: Request, authorization: str = Header(None)):
         )
 
     return response.json()
+
+@router.post("/plan/today/")
+async def get_plan(request: Request, authorization: str = Header(None)):
+    
+    if not authorization:
+        raise HTTPException(status_code=401, detail="Missing Authorization token")
+    
+    payload = get_current_token_payload(authorization)
+    body = await request.json()
+
+    json_response = {
+        "user_id": payload["sub"],
+        "week": body.get("week")
+    }
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"{SERVICES['assistant']}/api/assistant/plan/today/",
+            json=json_response
+        )
+
+    return response.json()
