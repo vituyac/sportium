@@ -19,6 +19,14 @@ class DatabaseConfig(BaseModel):
     pool_size: int = 50
     max_overflow: int = 10
 
+class YandexConfig(BaseModel):
+    api_key: str
+    folder_id: str
+    model_name: str
+    model_version: str
+    sleep_interval: float
+    doc_model_uri: str
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=(".env.template", ".env"),
@@ -29,5 +37,6 @@ class Settings(BaseSettings):
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
+    ya: YandexConfig
 
 settings = Settings()

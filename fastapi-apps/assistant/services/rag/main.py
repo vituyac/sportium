@@ -14,15 +14,15 @@ from langchain_community.docstore.in_memory import InMemoryDocstore
 from langchain.schema import Document
 import asyncio
 import aiofiles
-
-load_dotenv("./services/rag/")
+from core.config import settings
 
 async def create_chain(template):
     llm = YandexGPT(
-        api_key = os.getenv("api_key"),
-        folder_id = os.getenv("folder_id"),
-        model_name = os.getenv("model_name"),
-        model_version = os.getenv("model_version")
+
+        api_key = settings.ya.api_key,
+        folder_id = settings.ya.folder_id,
+        model_name = settings.ya.model_name,
+        model_version = settings.ya.model_version
     )
 
     prompt = ChatPromptTemplate.from_messages([
@@ -36,10 +36,10 @@ async def create_chain(template):
 
 async def load_index(index_file, meta_file):
     embeddings = YandexGPTEmbeddings(
-        api_key=os.getenv("api_key"),
-        folder_id=os.getenv("folder_id"),
-        sleep_interval=float(os.getenv("sleep_interval")),
-        doc_model_uri=os.getenv("doc_model_uri"),
+        api_key = settings.ya.api_key,
+        folder_id = settings.ya.folder_id,
+        sleep_interval=settings.ya.sleep_interval,
+        doc_model_uri=settings.ya.doc_model_uri,
     )
 
     index = await asyncio.to_thread(faiss.read_index, index_file)
