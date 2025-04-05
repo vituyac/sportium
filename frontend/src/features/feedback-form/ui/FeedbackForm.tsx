@@ -3,8 +3,10 @@
 import {TextField, Button, Box, Typography, Stack} from '@mui/material';
 import { useFeedbackForm } from "../model/useFeedbackForm";
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import { useTranslation } from 'react-i18next';
 
 export const FeedbackForm = () => {
+	const { t } = useTranslation();
 	const {
 		name,
 		email,
@@ -27,14 +29,14 @@ export const FeedbackForm = () => {
 			}}
 		>
 			<Typography variant="body2" align="center">
-				Возникли вопросы или появились предложения?
+				{t("Возникли вопросы или появились предложения?")}
 			</Typography>
 
 			<Stack direction={'row'} spacing={2}>
 				<TextField
 					size={'small'}
 					name="name"
-					label="Имя"
+					label={t("Имя")}
 					variant="outlined"
 					value={name}
 					onChange={handleChange}
@@ -42,7 +44,7 @@ export const FeedbackForm = () => {
 				<TextField
 					size={'small'}
 					name="email"
-					label="Почта"
+					label={t("Почта")}
 					variant="outlined"
 					value={email}
 					onChange={handleChange}
@@ -51,7 +53,7 @@ export const FeedbackForm = () => {
 			<TextField
 				size={'small'}
 				name="message"
-				label="Сообщение"
+				label={t("Сообщение")}
 				variant="outlined"
 				multiline
 				rows={4}
@@ -61,7 +63,7 @@ export const FeedbackForm = () => {
 				helperText={`${charsLeft}/100`}
 			/>
 			<Button size={'medium'} type="submit" variant="outlined" endIcon={<ArrowCircleRightIcon/>}>
-				Отправить
+				{t("Отправить")}
 			</Button>
 		</Box>
 	);

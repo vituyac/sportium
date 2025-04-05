@@ -5,9 +5,11 @@ import VkIcon from '@shared/assets/icons/vk.svg?react';
 import HandsHeart from '@shared/assets/images/hands-heart.svg?react';
 import BackgroundFooter from '@shared/assets/images/footer-bg.png';
 import {FeedbackForm} from '@features/feedback-form/ui/FeedbackForm.tsx';
+import { useTranslation } from 'react-i18next';
 
 export const Footer = () =>{
 	const theme = useTheme();
+	const { t } = useTranslation();
 	return (
 		<Box sx={{
 			boxShadow: `0px 0px 10px ${theme.palette.secondary.main}`,
@@ -33,8 +35,8 @@ export const Footer = () =>{
 					<Grid size={{xs: 12, sm: 7}}>
 						<Stack spacing={2}>
 							<Typography>SPORTIUM</Typography>
-							<Typography>Данный проект разработан студентами ЛГТУ в рамках хакатона в образовательных и исследовательских целях.</Typography>
-							<Typography>Связь с нами: </Typography>
+							<Typography>{t("Данный проект разработан студентами ЛГТУ в рамках хакатона в образовательных и исследовательских целях.")}</Typography>
+							<Typography>{t("Связь с нами:")} </Typography>
 							<Stack direction="row" spacing={2}>
 								<IconButton color={'primary'}>
 									<TelegramIcon/>
@@ -46,7 +48,7 @@ export const Footer = () =>{
 									<VkIcon height={'24px'} width={'24px'} fill={ theme.palette.primary.main }/>
 								</IconButton>
 							</Stack>
-							<Typography>© 2025 LOGO. Разработано студентами ЛГТУ</Typography>
+							<Typography>{t("© 2025 LOGO. Разработано студентами ЛГТУ")}</Typography>
 							<HandsHeart/>
 						</Stack>
 					</Grid>

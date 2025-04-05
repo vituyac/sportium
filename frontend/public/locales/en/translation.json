@@ -21,10 +21,13 @@
       "Хочешь заменить сложное упражнение или не любишь гречку? Просто напиши об этом в чате — система учтёт пожелания, адаптирует рекомендации и сформирует новый план на неделю. Всё просто и удобно.": "Do you want to replace a difficult exercise or don't like buckwheat? Just write about it in the chat. The system will take into account your wishes, adapt your recommendations, and create a new plan for the week. Everything is simple and convenient.",
       "Что умеет Sportium?": "What can Sportium do?",
 
-      "": "",
-      "": "",
-      "": "",
-      "": "",
-      "": "",
-      "": ""
+      "Данный проект разработан студентами ЛГТУ в рамках хакатона в образовательных и исследовательских целях.": "This project was developed by students of LSTU as part of a hackathon for educational and research purposes.",
+      "Связь с нами:": "Contact Us:",
+      "© 2025 LOGO. Разработано студентами ЛГТУ": "© 2025 LOGO. Developed by LSTU students",
+      "Возникли вопросы или появились предложения?": "Have questions or suggestions?",
+      "Имя": "Nickname",
+      "Почта": "EMail",
+      "Сообщение": "Message",
+      "Отправить": "Send"
+
 }
