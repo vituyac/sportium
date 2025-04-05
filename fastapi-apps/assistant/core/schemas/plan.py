@@ -47,3 +47,9 @@ class WeeklyPlanReadSchema(WeeklyPlanCreateSchema):
 class PlanRequest(BaseModel):
     user_id: int
     week: Literal["this", "next"]
+
+class MarkDoneRequest(BaseModel):
+    item_id: int
+    item_type: Literal["dish", "task"]
+    user_id: int
+    week: Literal["this", "next"]

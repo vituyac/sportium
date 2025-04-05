@@ -8,7 +8,8 @@ all = (
     "WeeklyPlanCreateSchema",
     "WeeklyPlanReadSchema",
     "UserSchema"
-    "PlanRequest"
+    "PlanRequest",
+    "MarkDoneRequest"
 )
 
 from .plan import *
