@@ -60,8 +60,16 @@ async def auth_refresh_jwt(credentials, session: AsyncSession):
     return TokenInfo(access=access_token, refresh=refresh_token)
 
 async def get_user_info(credentials, session: AsyncSession):
-    user = await token_crud.get_current_active_auth_user(token_crud.ACCESS_TOKEN_TYPE, credentials, session)
-    return UserSchema.model_validate(user)
+    user = await token_crud.get_current_active_auth_user(
+        token_crud.ACCESS_TOKEN_TYPE, credentials, session
+    )
+
+    user_dict = user.__dict__.copy()
+
+    if user.gender is not None:
+        user_dict["gender"] = user.gender.value
+
+    return UserSchema.model_validate(user_dict)
 
 async def update_user_avatar(credentials, file, session: AsyncSession):
     user = await token_crud.get_current_active_auth_user(token_crud.ACCESS_TOKEN_TYPE, credentials, session)
