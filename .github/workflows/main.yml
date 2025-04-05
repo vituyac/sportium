@@ -25,7 +25,7 @@ jobs:
         run: ssh-keyscan -H ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
 
       - name: Sync project files to server
-        run: rsync --archive --compress --delete --progress ./ ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}:${{ env.SERVER_PATH }}
+        run: rsync --archive --compress --delete --progress ./ ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}:${{ env.SERVER_PATH }} --exclude=".env"
 
       - name: Run docker-compose on server
         run: |
