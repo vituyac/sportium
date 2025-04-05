@@ -8,5 +8,5 @@ class UserSchema(BaseModel):
     weight: str
     training_goal: str
     sex: str
-    message: str = None
+    message: Optional[str] = None
 
