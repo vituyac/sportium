@@ -32,19 +32,31 @@ def register_ws_routes(app):
                 await websocket.send_text(json.dumps({"error": "Missing access token or act"}))
                 await websocket.close()
                 return
-            token = HTTPAuthorizationCredentials(scheme="Bearer", credentials=access_token)
-            payload = get_current_token_payload(token)
+            
+            try:
+                token = HTTPAuthorizationCredentials(scheme="Bearer", credentials=access_token)
+                payload = get_current_token_payload(token)
 
-            required_fields = ["age", "height", "weight", "training_goal", "sex"]
+                required_fields = ["age", "height", "weight", "training_goal", "sex"]
+                missing_fields = [field for field in required_fields if payload.get(field) is None]
 
-            missing_fields = [field for field in required_fields if payload.get(field) is None]
-            await websocket.send_text(json.dumps({"error": "Missing access token or act"}))
-            if missing_fields:
-                await websocket.send_text(json.dumps({
-                    "detail": "Вы не до конца заполнили профиль"
-                }))
+                if missing_fields:
+                    await websocket.send_json({
+                        "error": "Вы не до конца заполнили профиль",
+                        "missing_fields": missing_fields
+                    })
+                    await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+                    return None
+
+                return payload
+
+            except Exception as e:
+                await websocket.send_json({
+                    "error": "Ошибка при обработке токена",
+                    "details": str(e)
+                })
                 await websocket.close()
-                return
+            
 
             user_data = {
                 "id": payload["sub"],
@@ -55,7 +67,7 @@ def register_ws_routes(app):
                 "sex": payload["sex"],
                 "message": message
             }
-            await websocket.send_text(json.dumps({"error": "Missing access token or act"}))
+            
             assistant_ws_url = f"ws://assistant-service:8004/ws/plan/{week}/"
 
             async with websockets.connect(assistant_ws_url) as assistant_ws:
