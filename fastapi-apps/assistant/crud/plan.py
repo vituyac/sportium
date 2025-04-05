@@ -253,8 +253,13 @@ async def mark_item_done(session, user_id, item_type, item_id, week):
     week_type = WeekTypeEnum.this_week if week == "this" else WeekTypeEnum.next_week
 
     result = await session.execute(
-        select(WeeklyPlan).where(WeeklyPlan.user_id == user_id, WeeklyPlan.week_type == week_type)
+        select(WeeklyPlan)
+        .where(WeeklyPlan.user_id == user_id, WeeklyPlan.week_type == week_type)
+        .options(
+            selectinload(getattr(WeeklyPlan, today_name))
+        )
     )
+
     weekly_plan = result.scalar_one_or_none()
     if not weekly_plan:
         raise HTTPException(status_code=404, detail="План не найден")

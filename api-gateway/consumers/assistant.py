@@ -68,7 +68,7 @@ def register_ws_routes(app):
             }
             
             assistant_ws_url = f"ws://assistant-service:8004/ws/plan/{week}/"
-
+            await websocket.send_text("всё получил, отправляю дальше")
             async with websockets.connect(assistant_ws_url) as assistant_ws:
                 await assistant_ws.send(json.dumps({
                     "act": act,
