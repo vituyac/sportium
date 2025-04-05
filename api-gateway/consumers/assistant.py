@@ -54,7 +54,7 @@ def register_ws_routes(app):
                 "message": payload.get("message", None)
             }
 
-            assistant_ws_url = f"ws://{SERVICES['assistant'].replace('http://', '')}/ws/plan/{week}/"
+            assistant_ws_url = f"ws://assistant-service:8004/ws/plan/{week}/"
 
             async with websockets.connect(assistant_ws_url) as assistant_ws:
                 await assistant_ws.send(json.dumps({
