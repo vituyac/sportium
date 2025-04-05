@@ -32,7 +32,7 @@ def register_ws_routes(app):
                 await websocket.send_text(json.dumps({"error": "Missing access token or act"}))
                 await websocket.close()
                 return
-            
+
             try:
                 payload = get_current_token_payload(access_token)
 
@@ -45,9 +45,7 @@ def register_ws_routes(app):
                         "missing_fields": missing_fields
                     })
                     await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
-                    return None
-
-                return payload
+                    return
 
             except Exception as e:
                 await websocket.send_json({
@@ -55,7 +53,7 @@ def register_ws_routes(app):
                     "details": str(e)
                 })
                 await websocket.close()
-            
+                return
 
             user_data = {
                 "id": payload["sub"],
@@ -66,9 +64,10 @@ def register_ws_routes(app):
                 "sex": payload["sex"],
                 "message": message
             }
-            
+
             assistant_ws_url = f"ws://assistant-service:8004/ws/plan/{week}/"
-            await websocket.send_text("всё получил, отправляю дальше")
+            await websocket.send_text("Токен валиден, соединяюсь с assistant...")
+
             async with websockets.connect(assistant_ws_url) as assistant_ws:
                 await assistant_ws.send(json.dumps({
                     "act": act,
@@ -88,7 +87,7 @@ def register_ws_routes(app):
                 await asyncio.gather(client_to_assistant(), assistant_to_client())
 
         except WebSocketDisconnect:
-            print("Client disconnected")
+            print("❌ WebSocket клиент отключился")
         except Exception as e:
-            print(f"WebSocket proxy error: {e}")
+            print(f"❗ WebSocket proxy error: {e}")
             await websocket.close(code=1011)
