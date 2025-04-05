@@ -17,7 +17,7 @@ from utils.jwt_decode import *
 router = APIRouter()
 
 @router.post("/plan/")
-async def token_refresh(request: Request, authorization: str = Header(None)):
+async def get_plan(request: Request, authorization: str = Header(None)):
     
     if not authorization:
         raise HTTPException(status_code=401, detail="Missing Authorization token")

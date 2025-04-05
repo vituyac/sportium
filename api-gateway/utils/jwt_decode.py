@@ -17,7 +17,12 @@ def decode_jwt(
 
 def get_current_token_payload(credentials):
     if credentials is None: raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token is missing")
-    token = credentials.credentials
+
+    if credentials.startswith("Bearer "):
+        token = credentials.replace("Bearer ", "")
+    else:
+        token = credentials
+
     try:
         payload = decode_jwt(token=token)
     except InvalidTokenError as e:
