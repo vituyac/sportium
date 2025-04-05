@@ -167,7 +167,8 @@ async def auth_user_vkid(request, session, credentials):
 
         if not vk_user:
             if not (await is_email_registered(user_info.get("email"), session)):
-                user_data = {"username": f"{translit(user_info.get("first_name"), 'ru', reversed=True)}{str(user_id)[:2] + str(user_id)[-2:]}"}
+                usname = user_info.get("first_name")
+                user_data = {"username": f"{translit(usname, 'ru', reversed=True)}{str(user_id)[:2] + str(user_id)[-2:]}"}
                 user_data["first_name"] = user_info.get("first_name")
                 user_data["last_name"] = user_info.get("last_name")
                 user_data["vk_id"] = user_id
