@@ -1,11 +1,14 @@
 from sqlalchemy import select, delete
 from sqlalchemy.orm import selectinload
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from datetime import date
 from core.models import (
     WeeklyPlan, DayPlan, Meal, Dish,
     WorkoutCategory, WorkoutTask,
     WeekTypeEnum
 )
+from fastapi import HTTPException
 
 WEEKDAYS = {
     0: "monday",
@@ -163,7 +166,8 @@ async def get_plan(session, user_id: int, week: str, include_ids: bool = False) 
 
 async def get_today_plan(session, user_id: int, week: str = "this", include_ids: bool = False) -> dict:
     week_type = WeekTypeEnum.this_week if week == "this" else WeekTypeEnum.next_week
-    today_name = WEEKDAYS[date.today().weekday()]
+    moscow_date = datetime.now(ZoneInfo("Europe/Moscow")).date()
+    today_name = WEEKDAYS[moscow_date.weekday()]
 
     result = await session.execute(
         select(WeeklyPlan)
@@ -242,3 +246,40 @@ async def get_today_plan(session, user_id: int, week: str = "this", include_ids:
             "workout": workout_progress
         }
     }
+
+async def mark_item_done(session, user_id, item_type, item_id, week):
+    moscow_date = datetime.now(ZoneInfo("Europe/Moscow")).date()
+    today_name = WEEKDAYS[moscow_date.weekday()]
+    week_type = WeekTypeEnum.this_week if week == "this" else WeekTypeEnum.next_week
+
+    result = await session.execute(
+        select(WeeklyPlan).where(WeeklyPlan.user_id == user_id, WeeklyPlan.week_type == week_type)
+    )
+    weekly_plan = result.scalar_one_or_none()
+    if not weekly_plan:
+        raise HTTPException(status_code=404, detail="План не найден")
+
+    day_plan = getattr(weekly_plan, today_name)
+    if not day_plan:
+        raise HTTPException(status_code=404, detail="План на сегодня не найден")
+
+    if item_type == "dish":
+        result = await session.execute(
+            select(Dish).where(Dish.id == item_id, Dish.meal.has(Meal.day_plan_id == day_plan.id))
+        )
+        item = result.scalar_one_or_none()
+    else:
+        result = await session.execute(
+            select(WorkoutTask).where(WorkoutTask.id == item_id, WorkoutTask.workout_category.has(WorkoutCategory.day_plan_id == day_plan.id))
+        )
+        item = result.scalar_one_or_none()
+
+    if not item:
+        raise HTTPException(status_code=404, detail=f"{item_type.title()} не найден")
+
+    item.is_done = True
+    session.add(item)
+    await session.commit()
+
+    today_plan = await get_today_plan(session=session, user_id=user_id, week=week, include_ids=True)
+    return today_plan

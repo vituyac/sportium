@@ -38,7 +38,7 @@ def register_ws_routes(app):
             required_fields = ["age", "height", "weight", "training_goal", "sex"]
 
             missing_fields = [field for field in required_fields if payload.get(field) is None]
-
+            await websocket.send_text(json.dumps({"error": "Missing access token or act"}))
             if missing_fields:
                 await websocket.send_text(json.dumps({
                     "detail": "Вы не до конца заполнили профиль"
@@ -55,7 +55,7 @@ def register_ws_routes(app):
                 "sex": payload["sex"],
                 "message": message
             }
-
+            await websocket.send_text(json.dumps({"error": "Missing access token or act"}))
             assistant_ws_url = f"ws://assistant-service:8004/ws/plan/{week}/"
 
             async with websockets.connect(assistant_ws_url) as assistant_ws:
