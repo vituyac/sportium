@@ -1,0 +1,42 @@
+{
+    "weekly_plan": {
+      "monday": {
+        "meals": {
+          "breakfast_1": [
+            {"dish": "Блюдо", "calories": 0}
+           ],
+          "breakfast_2": [
+            {"dish": "Блюдо", "calories": 0},
+            {"dish": "Блюдо", "calories": 0}
+          ],
+          "lunch": [
+            {"dish": "Блюдо", "calories": 0},
+            {"dish": "Блюдо", "calories": 0}
+          ],
+          "snack": [
+            {"dish": "Блюдо", "calories": 0}
+           ],
+          "dinner": [
+            {"dish": "Блюдо", "calories": 0},
+            {"dish": "Блюдо", "calories": 0}
+          ]
+        },
+        "workout": [
+          {
+            "category": "Категория упражнения",
+            "tasks": [
+              {"task": "Описание упражнения", "burned_calories": 0},
+              {"task": "Описание упражнения", "burned_calories": 0}
+            ]
+          },
+          {
+            "category": "Категория упражнения",
+            "tasks": [
+              {"task": "Описание упражнения", "burned_calories": 0},
+              {"task": "Описание упражнения", "burned_calories": 0}
+            ]
+          }
+        ]
+      }
+    }
+}

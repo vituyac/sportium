@@ -1,0 +1,32 @@
+from sqlalchemy.ext.asyncio import AsyncSession
+from core.models import WeekTypeEnum
+from core.schemas import UserSchema
+from services.rag.main import prepare_ai_request
+from crud.plan import *
+
+async def generate_weekly_plan_for_user(user_data: UserSchema, session: AsyncSession, activity, week):
+
+    presonal_data = {
+        "sex": user_data.sex,
+        "age": user_data.age,
+        "height": user_data.height,
+        "weight": user_data.weight,
+        "training_goal": user_data.training_goal,
+    }
+    message = user_data.message if user_data.message else None
+    week_type = WeekTypeEnum.this_week if week == "this" else WeekTypeEnum.next_week
+
+    if activity == "editPlan": 
+        temp_json = await get_plan(session, user_data.id, week_type)
+        plan = await prepare_ai_request(activity, presonal_data, temp_json, message)
+    elif activity == "createTodayPlan":
+        plan = await prepare_ai_request(activity, presonal_data)
+    else:
+        temp_json = await get_plan(session, user_data.id, WeekTypeEnum.next_week)
+        plan = await prepare_ai_request(activity, presonal_data, temp_json)
+
+    await save_weekly_plan_to_db(user_data.id, plan, week_type, session)
+
+    return "OK"
+    # new_plan = await get_plan(session, user_data.id, week_type, True)
+    

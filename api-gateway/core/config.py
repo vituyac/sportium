@@ -3,11 +3,13 @@ from pathlib import Path
 from pydantic_settings import BaseSettings
 
 SERVICES = {
-    "users": "http://users-service:8001"
+    "users": "http://users-service:8001",
+    "assistant": "http://assistant-service:8004"
 }
 
 class ApiPrefix(BaseModel):
     users: str = "/api/users"
+    assistant: str = "/api/assistant"
 
 class RunConfig(BaseModel):
     host: str = "0.0.0.0"
