@@ -83,3 +83,26 @@ async def get_plan(request: Request, authorization: str = Header(None)):
         )
 
     return response.json()
+
+@router.get("/docs/")
+async def proxy_docs(request: Request):
+
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            f"{SERVICES['assistant']}/api/docs/",
+        )
+
+    modified_html = re.sub(
+        r'url\s*:\s*[\'"]/openapi\.json[\'"]',
+        'url: "/api/assistant/openapi.json"',
+        response.text
+    )
+
+    return HTMLResponse(content=modified_html, status_code=response.status_code)
+
+@router.get("/openapi.json", response_class=JSONResponse)
+async def proxy_openapi():
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"{SERVICES['assistant']}/openapi.json")
+    
+    return JSONResponse(content=response.json(), status_code=response.status_code)
