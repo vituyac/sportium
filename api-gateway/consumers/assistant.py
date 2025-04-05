@@ -26,6 +26,7 @@ def register_ws_routes(app):
             access_token = initial_data.get("access")
             act = initial_data.get("act")
             week = initial_data.get("week", "this")
+            message = initial_data.get("message", None)
 
             if not access_token or not act:
                 await websocket.send_text(json.dumps({"error": "Missing access token or act"}))
@@ -52,7 +53,7 @@ def register_ws_routes(app):
                 "weight": str(payload["weight"]),
                 "training_goal": payload["training_goal"],
                 "sex": payload["sex"],
-                "message": payload.get("message", None)
+                "message": message
             }
 
             assistant_ws_url = f"ws://assistant-service:8004/ws/plan/{week}/"
