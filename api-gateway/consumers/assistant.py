@@ -59,7 +59,7 @@ def register_ws_routes(app):
             async with websockets.connect(assistant_ws_url) as assistant_ws:
                 await assistant_ws.send(json.dumps({
                     "act": act,
-                    "user_data": user_data.dict()
+                    "user_data": user_data
                 }))
 
                 async def client_to_assistant():
