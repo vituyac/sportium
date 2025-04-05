@@ -14,6 +14,7 @@ import asyncio, json
 import websockets
 from fastapi import WebSocket, WebSocketDisconnect, APIRouter
 from utils.jwt_decode import *
+from fastapi.security import HTTPAuthorizationCredentials
 
 def register_ws_routes(app):
     @app.websocket('/ws/plan/')
@@ -30,8 +31,8 @@ def register_ws_routes(app):
                 await websocket.send_text(json.dumps({"error": "Missing access token or act"}))
                 await websocket.close()
                 return
-
-            payload = get_current_token_payload(access_token)
+            token = HTTPAuthorizationCredentials(scheme="Bearer", credentials=access_token)
+            payload = get_current_token_payload(token)
 
             required_fields = ["age", "height", "weight", "training_goal", "sex"]
 
