@@ -64,7 +64,7 @@ services:
       - users-media:/app/media
 
   assistant:
-    container_name: users-service
+    container_name: assistant-service
     build: 
       context: ./fastapi-apps/assistant
       dockerfile: Dockerfile
