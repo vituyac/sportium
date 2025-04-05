@@ -61,7 +61,7 @@ async def auth_refresh_jwt(credentials, session: AsyncSession):
 
 async def get_user_info(credentials, session: AsyncSession):
     user = await token_crud.get_current_active_auth_user(token_crud.ACCESS_TOKEN_TYPE, credentials, session)
-    return UserSchema.model_validate(user.__dict__)
+    return UserSchema.model_validate(user)
 
 async def update_user_avatar(credentials, file, session: AsyncSession):
     user = await token_crud.get_current_active_auth_user(token_crud.ACCESS_TOKEN_TYPE, credentials, session)
