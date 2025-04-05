@@ -1,6 +1,5 @@
 import json, requests
 from json import loads
-from transliterate import translit
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException
 from core.schemas import *
@@ -167,8 +166,7 @@ async def auth_user_vkid(request, session, credentials):
 
         if not vk_user:
             if not (await is_email_registered(user_info.get("email"), session)):
-                usname = user_info.get("first_name")
-                user_data = {"username": f"{translit(usname, 'ru', reversed=True)}{str(user_id)[:2] + str(user_id)[-2:]}"}
+                user_data = {"username": f"sportiumuser{str(user_id)[:2] + str(user_id)[-2:]}"}
                 user_data["first_name"] = user_info.get("first_name")
                 user_data["last_name"] = user_info.get("last_name")
                 user_data["vk_id"] = user_id
