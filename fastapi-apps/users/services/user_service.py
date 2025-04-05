@@ -66,8 +66,8 @@ async def get_user_info(credentials, session: AsyncSession):
 
     user_dict = user.__dict__.copy()
 
-    if user.gender is not None:
-        user_dict["gender"] = user.gender.value
+    if isinstance(user_dict.get("gender"), str):
+        user_dict["gender"] = GenderEnum(user_dict["gender"])
 
     return UserSchema.model_validate(user_dict)
 
