@@ -2,15 +2,19 @@ import asyncio
 import json
 import aio_pika
 import aiosmtplib
+import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from pathlib import Path
 from jinja2 import Template
 from core.config import settings
 
+
 async def load_template(template_name: str, code: str) -> str:
     # путь к шаблонам
-    template_path = Path(__file__).parent / "static" / "templates" / template_name
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # папка 'mailer'
+    TEMPLATES_DIR = os.path.join(BASE_DIR, 'static', 'templates')
+    template_path = os.path.join(TEMPLATES_DIR, template_name)
+
     with open(template_path, "r", encoding="utf-8") as f:
         template = Template(f.read())
     return template.render(code=code)
