@@ -15,19 +15,17 @@ def decode_jwt(
     decoded = jwt.decode(token, public_key, algorithms=["RS256"])
     return decoded
 
-def get_current_token_payload(credentials, role: str):
+def get_current_token_payload(credentials):
     if credentials is None: raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token is missing")
     token = credentials.credentials
     try:
         payload = decode_jwt(token=token)
-        if payload["role"] != role:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Недостаточно прав")
     except InvalidTokenError as e:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"invalid token error: {e}")
     return payload
 
-def is_user(credentials = Depends(http_bearer)):
-    return get_current_token_payload(credentials, "user")
+# def is_user(credentials = Depends(http_bearer)):
+#     return get_current_token_payload(credentials, "user")
 
-def is_admin(credentials = Depends(http_bearer)):
-    return get_current_token_payload(credentials, "admin")
+# def is_admin(credentials = Depends(http_bearer)):
+#     return get_current_token_payload(credentials, "admin")

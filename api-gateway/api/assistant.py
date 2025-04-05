@@ -55,6 +55,17 @@ async def proxy_ws_with_auth(websocket: WebSocket):
 
         payload = get_current_token_payload(access_token)
 
+        required_fields = ["age", "height", "weight", "training_goal", "sex"]
+
+        missing_fields = [field for field in required_fields if payload.get(field) is None]
+
+        if missing_fields:
+            await websocket.send_text(json.dumps({
+                "detail": "Вы не до конца заполнили профиль"
+            }))
+            await websocket.close()
+            return
+
         user_data = {
             "id": payload["sub"],
             "age": payload["age"],

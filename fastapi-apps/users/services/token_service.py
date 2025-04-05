@@ -7,6 +7,7 @@ from datetime import timedelta
 from .user_service import *
 from core.schemas import UserSchema, LoginSchema
 from utils.exceptions import AppError
+from datetime import date
 
 TOKEN_TYPE_FIELD = "type"
 ACCESS_TOKEN_TYPE = "access"
@@ -42,7 +43,15 @@ def create_access_token(user: UserSchema) -> str:
     jwt_payload = {
         "sub": str(user.id),
         "username": user.username,
-        "role": "admin" if user.is_admin else "user"
+        "sex": user.gender if user.gender else None,
+        "age": (
+            date.today().year - user.date_of_birth.year
+            - ((date.today().month, date.today().day) < (user.date_of_birth.month, user.date_of_birth.day))
+            if user.date_of_birth else None
+        ),
+        "height": user.height if user.height else None,
+        "weight": user.weight if user.weight else None,
+        "training_goal": user.training_goal if user.training_goal else None
     }
     return create_jwt(token_type=ACCESS_TOKEN_TYPE, token_data=jwt_payload, expire_minutes=settings.auth_jwt.access_token_expire_minutes)
 
