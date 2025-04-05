@@ -3,10 +3,8 @@ import {
 	Avatar,
 	Box,
 	Button,
-	Container,
 	Drawer,
 	IconButton,
-	Link,
 	List,
 	ListItemButton,
 	ListItemText,
@@ -27,9 +25,8 @@ import {useSelector} from 'react-redux';
 import ProfileMenu from '@widgets/Header/ui/ProfileMenu.tsx';
 import {logoutUser} from '@features/user/logoutUser.ts';
 import {useAppDispatch} from '@shared/lib/hooks';
-import {LogoLink} from '@shared/ui/LogoLink/LogoLink.tsx';
 
-export const Header = () => {
+export const ProfileHeader = () => {
 	const authData = useSelector(getUserAuthData);
 
 	const dispatch = useAppDispatch();
@@ -70,48 +67,18 @@ export const Header = () => {
 			backdropFilter: scrolled ? 'blur(10px)' : 'none',
 			backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
 			transition: 'background-color 0.3s ease, backdrop-filter 0.3s ease',
+			pr: 2
 		}}>
-			<Container>
-				<Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-					<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-						<Box sx={{marginRight: 2}}>
-							<LogoLink/>
-						</Box>
-
-						{/* Desktop nav */}
-
-						{!isMobile && (
-							<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-								{navLinks.map(({ label, href }) => {
-									const isActive = currentPath === href;
-
-									return (
-										<Link
-											key={label}
-											underline="hover"
-											component={RouterLink}
-											to={href}
-											sx={{
-												textDecoration: isActive ? 'underline' : 'none',
-											}}
-										>
-											{label}
-										</Link>
-									);
-								})}
-							</Box>
-						)}
-					</Box>
-
-					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-						<LangSwitcher />
-						<ThemeSwitcher />
-						{!isMobile && (
-							<>
-								{ authData ?
-									<ProfileMenu image={authData.image}/>
+			<Toolbar disableGutters sx={{ justifyContent: 'right' }}>
+				<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+					<LangSwitcher />
+					<ThemeSwitcher />
+					{!isMobile && (
+						<>
+							{ authData ?
+								<ProfileMenu image={authData.image}/>
 								:
-									<>
+								<>
 									<Button
 										variant="outlined"
 										color={mode === 'light' ? 'primary' : 'secondary'}
@@ -121,26 +88,25 @@ export const Header = () => {
 										{t('Регистрация')}
 									</Button>
 									<Button
-											variant="contained"
-											color={mode === 'light' ? 'primary' : 'secondary'}
-											component={RouterLink}
-											to="/auth/login"
-											>
+										variant="contained"
+										color={mode === 'light' ? 'primary' : 'secondary'}
+										component={RouterLink}
+										to="/auth/login"
+									>
 										{t('Вход')}
 									</Button>
-									</>
-								}
+								</>
+							}
 
-							</>
-						)}
-						{isMobile && (
-							<IconButton onClick={toggleDrawer} color="inherit">
-								<MenuIcon />
-							</IconButton>
-						)}
-					</Box>
-				</Toolbar>
-			</Container>
+						</>
+					)}
+					{isMobile && (
+						<IconButton onClick={toggleDrawer} color="inherit">
+							<MenuIcon />
+						</IconButton>
+					)}
+				</Box>
+			</Toolbar>
 
 			<Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
 				<Box sx={{ width: 250, height: '100%', p: 2, backgroundColor: 'background.default' }} >
@@ -194,7 +160,7 @@ export const Header = () => {
 									<ListItemText primary="Вход" />
 								</ListItemButton>
 							</>
-					}
+						}
 					</List>
 				</Box>
 			</Drawer>

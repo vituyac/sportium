@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Link, Paper} from '@mui/material';
+import {Box, Paper} from '@mui/material';
 import {LoginForm} from '../components/LoginForm';
 import {RegistrationForm} from '../components/RegistrationForm';
 import {ForgotPasswordForm} from '../components/ForgotPasswordForm.tsx';
 import AuthSwitcher from './AuthSwitcher';
-import {Link as RouterLink, useLocation, useNavigate} from 'react-router';
+import {useLocation, useNavigate} from 'react-router';
+import {LogoLink} from '@shared/ui/LogoLink/LogoLink.tsx';
 
 export type AuthMode = 'login' | 'register' | 'reset';
 
@@ -101,7 +102,7 @@ export const AuthPanel: React.FC = () => {
 					alignItems: 'center',
 				}}
 			>
-				<Link  sx={{
+				<Box  sx={{
 					position: 'absolute',
 					left: {
 						sm: mode !== 'register' ? '16px' : 'none'
@@ -110,10 +111,10 @@ export const AuthPanel: React.FC = () => {
 						sm: mode !== 'register' ? 'none' : '16px',
 					},
 					top: '16px',
-				}} color="primary" aria-label="add an alarm" to="/" component={RouterLink}
+				}}
 				>
-					Назад на главную
-				</Link>
+					<LogoLink/>
+				</Box>
 				{renderForm()}
 			</Box>
 			<AuthSwitcher mode={mode} onModeChange={handleModeChange} />
