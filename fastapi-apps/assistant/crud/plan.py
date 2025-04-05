@@ -123,33 +123,49 @@ async def get_plan(session, user_id: int, week: str, include_ids: bool = False) 
         return {"weekly_plan": {}}
 
     def serialize_day(day: DayPlan) -> dict:
+        meals_data = {}
+        received_calories = 0
+
+        for meal in day.meals:
+            dishes = []
+            for d in meal.dishes:
+                if include_ids and d.is_done:
+                    received_calories += d.calories
+                dishes.append({
+                    **({"id": d.id} if include_ids else {}),
+                    "dish": d.dish,
+                    "calories": d.calories,
+                    **({"is_done": d.is_done} if include_ids else {})
+                })
+            meals_data[meal.type] = dishes
+
+        workouts_data = []
+        burned_calories = 0
+
+        for wc in day.workouts:
+            tasks = []
+            for t in wc.tasks:
+                if include_ids and t.is_done:
+                    burned_calories += t.burned_calories
+                tasks.append({
+                    **({"id": t.id} if include_ids else {}),
+                    "task": t.task,
+                    "burned_calories": t.burned_calories,
+                    **({"is_done": t.is_done} if include_ids else {})
+                })
+            workouts_data.append({
+                "category": wc.category,
+                "tasks": tasks
+            })
+
         return {
-            "meals": {
-                meal.type: [
-                    {
-                        **({"id": d.id} if include_ids else {}),
-                        "dish": d.dish,
-                        "calories": d.calories,
-                        **({"is_done": d.is_done} if include_ids else {})
-                    }
-                    for d in meal.dishes
-                ]
-                for meal in day.meals
-            },
-            "workout": [
-                {
-                    "category": wc.category,
-                    "tasks": [
-                        {
-                            **({"id": t.id} if include_ids else {}),
-                            "task": t.task,
-                            "burned_calories": t.burned_calories,
-                            **({"is_done": t.is_done} if include_ids else {})
-                        }
-                        for t in wc.tasks
-                    ]
-                } for wc in day.workouts
-            ]
+            "meals": meals_data,
+            "workout": workouts_data,
+            "calories_summary": {
+                "received": received_calories,
+                "burned": burned_calories,
+                "delta": received_calories - burned_calories
+            }
         }
 
     return {
