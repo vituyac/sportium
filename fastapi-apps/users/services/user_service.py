@@ -76,7 +76,7 @@ async def delete_user_avatar(credentials, session: AsyncSession):
 async def update_user_info(update_data: UserUpdateSchema, credentials, session: AsyncSession):
     user = await token_crud.get_current_active_auth_user(token_crud.ACCESS_TOKEN_TYPE, credentials, session)
     updated_user = await update_user_fio(update_data, user, session)
-    return await create_access_token(updated_user)
+    return create_access_token(updated_user)
 
 async def forgot_password(request: EmailSchema, session: AsyncSession):
     if not (await is_email_registered(request.email, session)):
