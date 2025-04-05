@@ -180,7 +180,7 @@ async def auth_user_vkid(request, session, credentials):
                 user = await create_user_vk(user_data, session)
                 if user:
                     await rabbitmq_client.send_message("mailer", {"email": user.email, "type": "3", "code": f"username: {user.username}, password: {password}"})
-                    login_schema = LoginSchema(username=user.username, password=password)
+                    login_schema = LoginSchema(email=user.email, password=password)
                     return await auth_user_issue_jwt(login_schema, session)
                 else:
                     raise AppError(error_code="VK_ERROR", status_code=400)
