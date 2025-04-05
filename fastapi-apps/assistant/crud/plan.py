@@ -264,6 +264,9 @@ async def get_today_plan(session, user_id: int, week: str = "this", include_ids:
     }
 
 async def mark_item_done(session, user_id, item_type, item_id, week):
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+
     moscow_date = datetime.now(ZoneInfo("Europe/Moscow")).date()
     today_name = WEEKDAYS[moscow_date.weekday()]
     week_type = WeekTypeEnum.this_week if week == "this" else WeekTypeEnum.next_week
@@ -271,9 +274,7 @@ async def mark_item_done(session, user_id, item_type, item_id, week):
     result = await session.execute(
         select(WeeklyPlan)
         .where(WeeklyPlan.user_id == user_id, WeeklyPlan.week_type == week_type)
-        .options(
-            selectinload(getattr(WeeklyPlan, today_name))
-        )
+        .options(selectinload(getattr(WeeklyPlan, today_name)))
     )
 
     weekly_plan = result.scalar_one_or_none()
@@ -286,19 +287,22 @@ async def mark_item_done(session, user_id, item_type, item_id, week):
 
     if item_type == "dish":
         result = await session.execute(
-            select(Dish).where(Dish.id == item_id, Dish.meal.has(Meal.day_plan_id == day_plan.id))
+            select(Dish)
+            .where(Dish.id == item_id, Dish.meal.has(Meal.day_plan_id == day_plan.id))
         )
-        item = result.scalar_one_or_none()
-    else:
+    elif item_type == "task":
         result = await session.execute(
-            select(WorkoutTask).where(WorkoutTask.id == item_id, WorkoutTask.workout_category.has(WorkoutCategory.day_plan_id == day_plan.id))
+            select(WorkoutTask)
+            .where(WorkoutTask.id == item_id, WorkoutTask.workout_category.has(WorkoutCategory.day_plan_id == day_plan.id))
         )
-        item = result.scalar_one_or_none()
+    else:
+        raise HTTPException(status_code=400, detail="Некорректный тип элемента")
 
+    item = result.scalar_one_or_none()
     if not item:
         raise HTTPException(status_code=404, detail=f"{item_type.title()} не найден")
 
-    item.is_done = True
+    item.is_done = not item.is_done
     session.add(item)
     await session.commit()
 
