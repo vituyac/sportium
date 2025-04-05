@@ -34,8 +34,7 @@ def register_ws_routes(app):
                 return
             
             try:
-                token = HTTPAuthorizationCredentials(scheme="Bearer", credentials=access_token)
-                payload = get_current_token_payload(token)
+                payload = get_current_token_payload(access_token)
 
                 required_fields = ["age", "height", "weight", "training_goal", "sex"]
                 missing_fields = [field for field in required_fields if payload.get(field) is None]
