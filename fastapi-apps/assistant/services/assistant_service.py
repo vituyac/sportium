@@ -3,6 +3,7 @@ from core.models import WeekTypeEnum
 from core.schemas import UserSchema
 from services.rag.main import prepare_ai_request
 from crud.plan import *
+import json
 
 async def generate_weekly_plan_for_user(user_data: UserSchema, session: AsyncSession, activity, week):
 
@@ -25,6 +26,7 @@ async def generate_weekly_plan_for_user(user_data: UserSchema, session: AsyncSes
         temp_json = await get_plan(session, user_data.id, WeekTypeEnum.next_week)
         plan = await prepare_ai_request(activity, presonal_data, temp_json)
 
+    if isinstance(plan, str): plan = json.loads(plan)
     await save_weekly_plan_to_db(user_data.id, plan, week_type, session)
 
     return "OK"
