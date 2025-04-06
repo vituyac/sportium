@@ -15,6 +15,7 @@ export const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ title, checked, onCh
 			control={
 				<Checkbox
 					checked={checked}
+					// @ts-ignore
 					onChange={(e) => onChange(e.target.checked)}
 					color="primary"
 					sx={{
@@ -35,7 +36,7 @@ export const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ title, checked, onCh
 						borderRadius: 1,
 					}}
 				>
-					<Typography color="primary.dark">{title}</Typography>
+					<Typography color="blackColor.main">{title}</Typography>
 				</Box>
 			}
 		/>

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {User, UserSchema} from '../types';
 import {fetchUserData} from '@entities/User/model/services/fetchUserData.ts';
 
@@ -24,7 +24,7 @@ const userSlice = createSlice({
 		builder.addCase(fetchUserData.pending, (state) => {
 			state.isLoading = true;
 		});
-		builder.addCase(fetchUserData.rejected, (state, action) => {
+		builder.addCase(fetchUserData.rejected, (state) => {
 			state.authData = undefined;
 			state.isLoading = false;
 		});

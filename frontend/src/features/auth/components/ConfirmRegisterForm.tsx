@@ -3,8 +3,7 @@ import {Box, Button, CircularProgress, TextField, Typography} from '@mui/materia
 import {useSelector} from 'react-redux';
 import {RootState} from '@app/providers/StoreProvider/config/store.ts';
 import Alert from '@mui/material/Alert';
-import { T } from 'node_modules/react-router/dist/development/fog-of-war-BjgPfDmv.d.mts';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 interface EmailVerificationFormProps {
 	email: string;

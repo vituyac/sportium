@@ -46,8 +46,9 @@ export const Header = ({ scrollToFooter }: HeaderProps) => {
 
 	const navLinks = [
 		{ label: t('Главная'), href: '/' },
-		{ label: t('Тренировки'), href: '#' },
-		{ label: t('Питание'), href: '#' },
+		// { label: t('Достижения'), href: '/achievements' },
+		// { label: t('Тренировки'), href: '#' },
+		// { label: t('Питание'), href: '#' },
 		{ label: t('Контакты'), href: '#footer', type: 'action' },
 	];
 

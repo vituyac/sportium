@@ -1,7 +1,7 @@
 import {WorkoutBlock} from './WorkoutBlock';
 import {PlanResponse, Workout} from '../model/types';
 import {markDone} from '../api/markDone';
-import {useState, useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {BlockView} from '@pages/ProfilePage/ui/BlockView.tsx';
 import {LinearProgress, Stack, Typography} from '@mui/material';
 
@@ -21,9 +21,11 @@ export const WorkoutCheckList = ({ workouts, progress, onUpdate }: Props) => {
 	const handleToggle = async (id: number) => {
 		try {
 			const updated = await markDone(id, 'task');
+
+			// @ts-ignore
 			setLocalWorkouts(updated.plan.workout);
 			onUpdate(updated);
-		} catch (err) {
+		} catch {
 			console.error('Ошибка при отметке task');
 		}
 	};

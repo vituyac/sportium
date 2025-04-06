@@ -90,6 +90,10 @@ export const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
 			<Box
 				component="img"
 				sx={{
+					display: {
+						sm: 'none',
+            md: 'block'
+					},
 					position: 'absolute',
 					bottom: 0,
 					right: 0,

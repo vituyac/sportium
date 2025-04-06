@@ -1,4 +1,5 @@
 import {
+	Alert,
 	Button,
 	Dialog,
 	DialogActions,
@@ -8,22 +9,14 @@ import {
 	Stack,
 	TextField,
 	Typography,
-	useTheme,
-	Alert,
 } from '@mui/material';
-import {useSelector} from 'react-redux';
 import {useEffect, useState} from 'react';
-
-import {getUserAuthData} from '@entities/User/model/selectors.ts';
 import {chatSocket} from '@pages/ProfilePage/api/websocket.ts';
 import {fetchPlans} from '@pages/ProfilePage/api/fetchPlans.ts';
 import {PlansResponse} from '@pages/ProfilePage/model/types.ts';
 import WeeklyPlanGrid from '@pages/ProfilePage/ui/WeeklyPlanGrid.tsx';
 
 export const WorkoutPlans = () => {
-	const authData = useSelector(getUserAuthData);
-	const theme = useTheme();
-
 	const [plans, setPlans] = useState<PlansResponse | null>(null);
 	const [detail, setDetail] = useState('');
 	const [selectedWeek, setSelectedWeek] = useState<'this' | 'next'>('this');

@@ -1,6 +1,4 @@
-import {Grid, useTheme} from '@mui/material';
-import {useSelector} from 'react-redux';
-import {getUserAuthData} from '@entities/User/model/selectors.ts';
+import {Grid} from '@mui/material';
 import {ProfileData} from '@pages/ProfilePage/ui/ProfileData.tsx';
 import {WorkoutCheckList} from '@pages/ProfilePage/ui/WorkoutCheckList.tsx';
 import {DietCheckList} from '@pages/ProfilePage/ui/DietCheckList.tsx';
@@ -9,12 +7,9 @@ import {DayPlan, PlanResponse} from '@pages/ProfilePage/model/types.ts';
 import {fetchPlan} from '@pages/ProfilePage/api/fetchDayPlan.ts';
 
 export const ProfileMain = () => {
-	const authData = useSelector(getUserAuthData);
-	const theme = useTheme();
-
 	const [plans, setPlan] = useState<DayPlan | null>(null);
 	const [progress, setProgress] = useState<{ meals: number; workout: number }>({ meals: 0, workout: 0 });
-	const [detail, setDetail] = useState<string>('');
+	const [setDetail] = useState<string>('');
 
 	useEffect(() => {
 		const getPlan = async () => {
@@ -22,6 +17,7 @@ export const ProfileMain = () => {
 				const data: PlanResponse = await fetchPlan();
 
 				if ('detail' in data) {
+					// @ts-ignore
 					setDetail(data.detail);
 					setPlan(null);
 					setProgress({ meals: 0, workout: 0 });

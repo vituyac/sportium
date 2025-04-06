@@ -6,7 +6,6 @@ export const lightTheme = createTheme({
 	palette: {
 		primary: {
 			main: '#191A24',
-			dark: '#191A24'
 		},
 		secondary: {
 			main: '#B6FA64',
@@ -18,6 +17,9 @@ export const lightTheme = createTheme({
 		background: {
 			default: '#FAFCF7',
 		},
+		blackColor: {
+			main: '#191A24',
+		}
 	},
 	customPalette: {
 		gradientMain: 'linear-gradient(45deg, #CAF28D, #8BD94D)',

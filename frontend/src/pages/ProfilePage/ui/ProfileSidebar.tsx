@@ -1,27 +1,17 @@
-import React, { useState } from 'react';
-import {
-	Box,
-	Button,
-	Drawer,
-	IconButton,
-	List,
-	Stack,
-	useMediaQuery,
-	useTheme,
-} from '@mui/material';
+import {useState} from 'react';
+import {Box, Button, Drawer, IconButton, List, Stack, useMediaQuery, useTheme,} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { ProfileSidebarItem } from '@pages/ProfilePage/ui/ProfileSidebarItem';
-import { LogoLink } from '@shared/ui/LogoLink/LogoLink';
-import { logoutUser } from '@features/user/logout/model/logoutUser';
-import { useAppDispatch } from '@shared/lib/hooks';
-import { Link as RouterLink } from 'react-router';
+import {ProfileSidebarItem} from '@pages/ProfilePage/ui/ProfileSidebarItem';
+import {LogoLink} from '@shared/ui/LogoLink/LogoLink';
+import {logoutUser} from '@features/user/logout/model/logoutUser';
+import {useAppDispatch} from '@shared/lib/hooks';
+import {Link as RouterLink} from 'react-router';
 
 import ButtonIco1 from '@shared/assets/icons/Button-1.svg?react';
 import ButtonIco2 from '@shared/assets/icons/Button-2.svg?react';
-import ButtonIco3 from '@shared/assets/icons/Button-3.svg?react';
 import ButtonIco4 from '@shared/assets/icons/Button.svg?react';
 import ButtonIco5 from '@shared/assets/icons/Button5.svg?react';
 

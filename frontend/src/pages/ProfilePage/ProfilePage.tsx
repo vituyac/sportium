@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { drawerWidth, ProfileSidebar } from '@pages/ProfilePage/ui/ProfileSidebar';
+import { ProfileSidebar } from '@pages/ProfilePage/ui/ProfileSidebar';
 import { ProfileHeader } from '@pages/ProfilePage/ui/ProfileHeader';
 import { Outlet } from 'react-router';
 

@@ -22,9 +22,10 @@ export const DietCheckList = ({ meals, progress, onUpdate }: Props) => {
 	const handleToggle = async (id: number) => {
 		try {
 			const updated = await markDone(id, 'dish');
+			// @ts-expect-error
 			setLocalMeals(updated.plan.meals);
 			onUpdate(updated);
-		} catch (err) {
+		} catch {
 			console.error('Ошибка при отметке dish');
 		}
 	};

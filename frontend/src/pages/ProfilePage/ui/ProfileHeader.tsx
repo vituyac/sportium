@@ -14,7 +14,6 @@ export const ProfileHeader = () => {
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
 	const [scrolled, setScrolled] = useState(false);
-	const [drawerOpen, setDrawerOpen] = useState(false);
 
 	const onLoginError = () => {
 		console.log('onLoginError')
@@ -44,12 +43,12 @@ export const ProfileHeader = () => {
 		}}>
 			<Toolbar disableGutters sx={{ justifyContent: 'right' }}>
 				<Stack direction="row" sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'nowrap' }}>
-					<LangSwitcher sx={{ flexShrink: 0 }} />
-					<ThemeSwitcher sx={{ flexShrink: 0 }} />
+					<LangSwitcher />
+					<ThemeSwitcher/>
 					{
 						authData?.vk_id
 							? <Box sx={{ width: 24 }} /> // Заглушка, чтобы сохранить структуру
-							: <VKLoginButton onLoginError={onLoginError} onLoginSuccess={onLoginSuccess} sx={{ flexShrink: 0 }} />
+							: <VKLoginButton onLoginError={onLoginError} onLoginSuccess={onLoginSuccess} />
 					}
 					<Box sx={{ flexGrow: 1 }} /> {/* Пушит кнопку вправо */}
 					<Button

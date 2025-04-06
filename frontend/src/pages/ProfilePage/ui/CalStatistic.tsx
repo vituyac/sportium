@@ -1,7 +1,4 @@
-import {Grid, Stack, Typography, useTheme} from '@mui/material';
-import {useSelector} from 'react-redux';
-import {getUserAuthData} from '@entities/User/model/selectors.ts';
-import React from 'react';
+import {Grid, Stack, Typography} from '@mui/material';
 
 interface CalStatisticProps{
 	received: number;
@@ -15,20 +12,20 @@ export const CalStatistic: React.FC<CalStatisticProps> = ({ burned, delta, recei
 			<Grid container sx={{textAlign: 'center'}}>
 				<Grid size={4}>
 					<Stack>
-						<Typography variant={'h6'} color={'primary.dark'}>{received} ккал</Typography>
-						<Typography variant={'body2'} color={'primary.dark'}>Получено за <br/> неделю</Typography>
+						<Typography variant={'h6'} color={'blackColor.main'}>{received} ккал</Typography>
+						<Typography variant={'body2'} color={'blackColor.main'}>Получено за <br/> неделю</Typography>
 					</Stack>
 				</Grid>
 				<Grid size={4}>
 					<Stack>
-						<Typography variant={'h6'} color={'primary.dark'}>{burned} ккал</Typography>
-						<Typography variant={'body2'} color={'primary.dark'}>Ккал <br/> потрачено</Typography>
+						<Typography variant={'h6'} color={'blackColor.main'}>{burned} ккал</Typography>
+						<Typography variant={'body2'} color={'blackColor.main'}>Ккал <br/> потрачено</Typography>
 					</Stack>
 				</Grid>
 				<Grid size={4}>
 					<Stack>
 						<Typography variant={'h6'} color={'secondary.dark'}>+{delta} ккал</Typography>
-						<Typography variant={'body2'} color={'primary.dark'}>Ккал <br/> Набрано</Typography>
+						<Typography variant={'body2'} color={'blackColor.main'}>Ккал <br/> Набрано</Typography>
 					</Stack>
 				</Grid>
 			</Grid>

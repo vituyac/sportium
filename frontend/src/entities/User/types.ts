@@ -12,6 +12,8 @@ export interface User {
 	weight: number;
 	training_goal: string;
 	gender: string;
+	imt: string;
+	fat: string;
 }
 
 export interface UserSchema {

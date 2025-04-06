@@ -16,10 +16,10 @@ export const UserValueBlocks = () => {
 					<UserValueBlock title={'Вес:'} value={authData?.weight} valueType={'кг'}/>
 				</Grid>
 				<Grid size={3}>
-					<UserValueBlock title={'ИМТ:'} value={authData?.height} valueType={'норма'}/>
+					<UserValueBlock title={'ИМТ:'} value={authData?.imt} valueType={'норма'}/>
 				</Grid>
 				<Grid size={3}>
-					<UserValueBlock title={'ЖИР:'} value={authData?.height} valueType={'%'}/>
+					<UserValueBlock title={'ЖИР:'} value={authData?.fat} valueType={'%'}/>
 				</Grid>
 			</Grid>
 		</>
