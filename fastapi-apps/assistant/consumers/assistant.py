@@ -19,8 +19,10 @@ router = APIRouter()
 def register_ws_routes(app):
     @app.websocket("/ws/plan/")
     async def websocket_endpoint(websocket: WebSocket):
+        # Примем соединение
         await websocket.accept()
         try:
+            # Получим входные данные
             initial_data = await websocket.receive_json()
             access_token = initial_data.get("access")
             act = initial_data.get("act")
@@ -32,7 +34,7 @@ def register_ws_routes(app):
                 await websocket.close()
                 return
 
-            # Валидация токена и необходимых полей
+            # Проверим токен
             try:
                 payload = get_current_token_payload(access_token)
                 required_fields = ["age", "height", "weight", "training_goal", "sex"]
@@ -48,7 +50,7 @@ def register_ws_routes(app):
                 await websocket.close()
                 return
 
-            # Формируем объект пользователя
+            # Собираем данные пользователя
             user_data = UserSchema(
                 id=payload["sub"],
                 age=payload["age"],
@@ -59,22 +61,23 @@ def register_ws_routes(app):
                 message=message,
             )
 
-            # Генерация (или редактирование) плана
-            await generate_weekly_plan_for_user(
+            # Вызываем нашу функцию генерации
+            plan = await generate_weekly_plan_for_user(
                 user_data=user_data,
                 activity=act,
-                week=week,
-                websocket=websocket
+                week=week
             )
 
-            # Сообщаем об окончании
-            await websocket.send_json({"detail": "ok"})
+            # Если всё прошло нормально, сообщаем об успехе
+            await websocket.send_json({"detail": "План успешно сгенерирован", "plan": plan})
             await websocket.close()
 
         except WebSocketDisconnect:
+            # Если клиент закрыл соединение — просто прекращаем работу
             print("Клиент отключился — генерация остановлена")
         except Exception as e:
             print(f"WebSocket ошибка: {e}")
+            # Отправляем ошибку на клиент (если он ещё не отключился)
             try:
                 await websocket.send_json({"detail": f"Ошибка: {str(e)}"})
             except:

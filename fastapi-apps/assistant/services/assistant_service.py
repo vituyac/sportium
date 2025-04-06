@@ -8,13 +8,18 @@ import json
 import logging
 logger = logging.getLogger(__name__)
 
-async def generate_weekly_plan_for_user(user_data, activity, week, websocket=None):
-    # Получаем сессию напрямую
-    session = await db_helper.session_getter()
+async def generate_weekly_plan_for_user(user_data, activity, week):
+    """
+    Упрощённая функция, которая:
+    1. Берёт сессию из async-генератора.
+    2. Генерирует / редактирует план.
+    3. Сохраняет план в БД.
+    """
+    # Получаем "контекст" (наш async-генератор)
+    session_gen = db_helper.session_getter()
+    # Забираем первую (и единственную) выдачу - объект сессии
+    session = await session_gen.__anext__()
     try:
-        if websocket:
-            await websocket.send_json({"detail": "📥 Начинаем генерацию плана..."})
-
         personal_data = {
             "sex": user_data.sex,
             "age": user_data.age,
@@ -27,47 +32,26 @@ async def generate_weekly_plan_for_user(user_data, activity, week, websocket=Non
         week_type = WeekTypeEnum.this_week if week == "this" else WeekTypeEnum.next_week
 
         if activity == "editPlan":
-            if websocket:
-                await websocket.send_json({"detail": "📂 Загружаем текущий план..."})
             temp_json = await get_plan(session, user_data.id, week_type)
-
-            if websocket:
-                await websocket.send_json({"detail": "🤖 Отправляем в AI для редактирования..."})
             plan = await prepare_ai_request(activity, personal_data, temp_json, message)
-
         elif activity == "createTodayPlan":
-            if websocket:
-                await websocket.send_json({"detail": "📅 Генерация плана на сегодня..."})
             plan = await prepare_ai_request(activity, personal_data)
-
         else:
-            if websocket:
-                await websocket.send_json({"detail": "📂 Загружаем план следующей недели..."})
             temp_json = await get_plan(session, user_data.id, WeekTypeEnum.next_week)
-
-            if websocket:
-                await websocket.send_json({"detail": "🤖 Генерация нового плана..."})
             plan = await prepare_ai_request(activity, personal_data, temp_json)
 
         if isinstance(plan, str):
             plan = json.loads(plan)
 
-        if websocket:
-            await websocket.send_json({"detail": "💾 Сохраняем план в базу..."})
-
+        # Сохраняем в БД
         await save_weekly_plan_to_db(user_data.id, plan, week_type, session)
 
-        if websocket:
-            await websocket.send_json({"detail": "✅ План успешно сгенерирован!"})
+        return plan
 
     except Exception as e:
-        if websocket:
-            try:
-                await websocket.send_json({"detail": f"❌ Ошибка генерации: {str(e)}"})
-            except:
-                pass
-        raise
+        # Пробрасываем ошибку, чтобы обработать её вне функции
+        raise e
     finally:
-        # Закрываем сессию, если это нужно
-        await session.close()
+        # Закрываем наш async-генератор
+        await session_gen.aclose()
     
