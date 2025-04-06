@@ -35,7 +35,6 @@ def register_ws_routes(app):
 
             try:
                 payload = get_current_token_payload(access_token)
-
                 required_fields = ["age", "height", "weight", "training_goal", "sex"]
                 missing_fields = [field for field in required_fields if payload.get(field) is None]
 
@@ -44,11 +43,8 @@ def register_ws_routes(app):
                     await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
                     return
 
-            except Exception as e:
-                await websocket.send_json({
-                    "detail": "Ошибка при обработке токена",
-                    "error": str(e)
-                })
+            except Exception:
+                await websocket.send_json({"detail": "Ошибка при обработке токена"})
                 await websocket.close()
                 return
 
@@ -62,18 +58,22 @@ def register_ws_routes(app):
                 message=message
             )
 
-            # Запуск генерации в фоне — без передачи session
-            asyncio.create_task(generate_weekly_plan_for_user(
+            await generate_weekly_plan_for_user(
                 user_data=user_data,
                 activity=act,
-                week=week
-            ))
+                week=week,
+                websocket=websocket
+            )
 
-            await websocket.send_json({"detail": "Генерация запущена в фоне..."})
+            await websocket.send_json({"detail": "ok"})
             await websocket.close()
 
         except WebSocketDisconnect:
-            print("Клиент отключился — генерация продолжается в фоне")
+            print("Клиент отключился — генерация остановлена")
         except Exception as e:
             print(f"WebSocket ошибка: {e}")
+            try:
+                await websocket.send_json({"detail": f"Ошибка: {str(e)}"})
+            except:
+                pass
             await websocket.close(code=1011)

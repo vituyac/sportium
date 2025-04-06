@@ -22,7 +22,7 @@ async def generate_weekly_plan_for_user(user_data, activity, week, websocket=Non
                 "training_goal": user_data.training_goal,
             }
 
-            message = user_data.message if user_data.message else None
+            message = user_data.message or None
             week_type = WeekTypeEnum.this_week if week == "this" else WeekTypeEnum.next_week
 
             if activity == "editPlan":
@@ -53,6 +53,7 @@ async def generate_weekly_plan_for_user(user_data, activity, week, websocket=Non
 
             if websocket:
                 await websocket.send_json({"detail": "💾 Сохраняем план в базу..."})
+
             await save_weekly_plan_to_db(user_data.id, plan, week_type, session)
 
             if websocket:
@@ -60,7 +61,9 @@ async def generate_weekly_plan_for_user(user_data, activity, week, websocket=Non
 
         except Exception as e:
             if websocket:
-                await websocket.send_json({"detail": f"❌ Ошибка генерации: {str(e)}"})
+                try:
+                    await websocket.send_json({"detail": f"❌ Ошибка генерации: {str(e)}"})
+                except:
+                    pass
             raise
-    # new_plan = await get_plan(session, user_data.id, week_type, True)
     
