@@ -45,6 +45,6 @@ class Settings(BaseSettings):
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
     ya: YandexConfig
-    auth_jwt: AuthJWT = AuthJWT()
+    jwt: AuthJWT = AuthJWT()
 
 settings = Settings()
