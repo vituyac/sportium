@@ -1,5 +1,5 @@
 import {BrowserRouter, Route, Routes, useNavigate} from 'react-router';
-import {Provider} from 'react-redux';
+import {Provider, useSelector} from 'react-redux';
 import {createStore, extraArg} from '@app/providers/StoreProvider/config/store';
 import {HomePage} from '@pages/HomePage';
 import {AuthPage} from '@pages/AuthPage';
@@ -9,6 +9,8 @@ import {ProfileFavorites} from '@pages/ProfilePage/ui/ProfileFavorites';
 import {AuthProvider} from '@app/providers/AuthProvider/ui/AuthProvider.tsx';
 import {ThemeProvider} from '@app/providers/ThemeProvider';
 import {useEffect} from 'react';
+import {getUserAuthData, getUserLoadingData} from '@entities/User/model/selectors.ts';
+import {WorkoutPlans} from '@pages/ProfilePage/ui/WorkoutPlans.tsx';
 
 const store = createStore();
 
@@ -34,7 +36,7 @@ const InjectNavigate = () => {
 						<Route path="/" element={<HomePage />} />
 						<Route path="/profile" element={<ProfilePage />}>
 							<Route index element={<ProfileMain />} />
-							<Route path="favorite" element={<ProfileFavorites />} />
+							<Route path="personal-plan" element={<WorkoutPlans />} />
 						</Route>
 					</Routes>
 				</AuthProvider>

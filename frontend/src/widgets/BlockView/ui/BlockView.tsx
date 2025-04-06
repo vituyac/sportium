@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import {FC} from 'react';
+import {Box, Grid, Typography} from '@mui/material';
 
-interface BlockViewProps {
+interface BlockViewProps{
 	title: string;
 	text: string;
 	image: string;
@@ -9,7 +9,7 @@ interface BlockViewProps {
 	icon?: React.FC<React.SVGProps<SVGSVGElement>>;
 }
 
-export const BlockView: FC<BlockViewProps> = ({ title, text, image, reverse, icon : Icon }) => {
+export const BlockView: FC<BlockViewProps> = ({ title, text, image, reverse, icon : Icon}) => {
 	return (
 		<Grid container spacing={4} alignItems="center">
 			<Grid size={{xs: 12, sm: 6}} order={{ xs: 1, sm: reverse ? 2 : 1 }}>
@@ -17,12 +17,14 @@ export const BlockView: FC<BlockViewProps> = ({ title, text, image, reverse, ico
 					component="img"
 					src={image}
 					alt={title}
-					sx={{
-						width: '100%',
-						height: 'auto',
-						borderRadius: 2,
-						objectFit: 'cover',
-					}}
+					sx={[
+						{
+							width: '100%',
+							height: 'auto',
+							borderRadius: 2,
+							objectFit: 'cover',
+						},
+					]}
 				/>
 			</Grid>
 			<Grid size={{xs: 12, sm: 6}} order={{ xs: 2, sm: reverse ? 1 : 2 }}>

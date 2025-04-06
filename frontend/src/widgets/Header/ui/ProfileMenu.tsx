@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, MenuItem, IconButton, Avatar } from '@mui/material';
 import {useAppDispatch} from '@shared/lib/hooks';
-import {logoutUser} from '@features/user/logoutUser.ts';
+import {logoutUser} from '@features/user/logout/model/logoutUser.ts';
 import {Link as RouterLink} from 'react-router';
 
 type ProfileMenuProps = {

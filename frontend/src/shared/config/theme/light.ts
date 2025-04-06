@@ -1,9 +1,12 @@
 import {createTheme} from '@mui/material/styles';
+import {linearProgressClasses} from '@mui/material/LinearProgress';
+import {grey} from '@mui/material/colors';
 
 export const lightTheme = createTheme({
 	palette: {
 		primary: {
 			main: '#191A24',
+			dark: '#191A24'
 		},
 		secondary: {
 			main: '#B6FA64',
@@ -29,4 +32,25 @@ export const lightTheme = createTheme({
 			color: '#191A24',
 		},
 	},
+	components: {
+		MuiLinearProgress: {
+			styleOverrides: {
+				root: {
+					height: 10,
+					borderRadius: 5,
+				},
+				colorPrimary: {
+					[`&.${linearProgressClasses.colorPrimary}`]: {
+						backgroundColor: grey[200],
+					},
+				},
+				bar: {
+					borderRadius: 5,
+				},
+				barColorPrimary: {
+					backgroundColor: '#A0E859',
+				},
+			},
+		},
+	}
 });

@@ -1,45 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import { tokenService } from '@shared/lib/tokenService/tokenService';
-import { api } from '@shared/api/base';
-import { userActions } from '@entities/User/model/slices';
-import { LoadingPage } from '@pages/LoadingPage/LoadingPage';
-import {getUserAuthData} from '@entities/User/model/selectors.ts';
+// AuthProvider.tsx (примерно)
+import React, {useEffect} from 'react';
+import {useAppDispatch} from '@shared/lib/hooks';
+import {fetchUserData} from '@entities/User/model/services/fetchUserData';
+import {LoadingPage} from '@pages/LoadingPage/LoadingPage';
+import {useSelector} from 'react-redux';
+import {getUserLoadingData} from '@entities/User/model/selectors.ts';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-	const dispatch = useDispatch();
-	const authData = useSelector(getUserAuthData);
-	const [isLoading, setIsLoading] = useState(true);
+	const dispatch = useAppDispatch();
+	const isLoading = useSelector(getUserLoadingData);
 
 	useEffect(() => {
-		const initAuth = async () => {
-			if (authData) {
-				setIsLoading(false);
-				return;
-			}
+		dispatch(fetchUserData());
+	}, [dispatch]);
 
-			if (tokenService.isLogoutInProgress()) {
-				tokenService.clearLogoutInProgress();
-				setIsLoading(false);
-				return;
-			}
+	if (isLoading) {
+		return <LoadingPage />;
+	}
 
-			const token = tokenService.getAccessToken();
-			if (token) {
-				try {
-					const response = await api.get('/users/me/', { authRequired: true });
-					dispatch(userActions.setAuthData(response.data));
-				} catch {
-					tokenService.clearTokens();
-					dispatch(userActions.clearAuthData());
-				}
-			}
-			setIsLoading(false);
-		};
-
-		initAuth();
-	}, [dispatch, authData]);
-
-	if (isLoading) return <LoadingPage />;
 	return <>{children}</>;
 };

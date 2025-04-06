@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { tokenService } from '@shared/lib/tokenService/tokenService';
-import { userActions } from '@entities/User/model/slices';
+import { tokenService } from '@shared/lib/tokenService/tokenService.ts';
+import { userActions } from '@entities/User/model/slices.ts';
 import { NavigateFunction } from 'react-router';
 
 interface ThunkExtra {

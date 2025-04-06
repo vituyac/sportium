@@ -25,11 +25,15 @@ import {useTranslation} from 'react-i18next';
 import {getUserAuthData} from '@entities/User/model/selectors.ts';
 import {useSelector} from 'react-redux';
 import ProfileMenu from '@widgets/Header/ui/ProfileMenu.tsx';
-import {logoutUser} from '@features/user/logoutUser.ts';
+import {logoutUser} from '@features/user/logout/model/logoutUser.ts';
 import {useAppDispatch} from '@shared/lib/hooks';
 import {LogoLink} from '@shared/ui/LogoLink/LogoLink.tsx';
 
-export const Header = () => {
+type HeaderProps = {
+	scrollToFooter?: () => void;
+};
+
+export const Header = ({ scrollToFooter }: HeaderProps) => {
 	const authData = useSelector(getUserAuthData);
 
 	const dispatch = useAppDispatch();
@@ -44,7 +48,7 @@ export const Header = () => {
 		{ label: t('Главная'), href: '/' },
 		{ label: t('Тренировки'), href: '#' },
 		{ label: t('Питание'), href: '#' },
-		{ label: t('Контакты'), href: '#' },
+		{ label: t('Контакты'), href: '#footer', type: 'action' },
 	];
 
 	const [scrolled, setScrolled] = useState(false);
@@ -82,9 +86,20 @@ export const Header = () => {
 
 						{!isMobile && (
 							<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-								{navLinks.map(({ label, href }) => {
-									const isActive = currentPath === href;
+								{navLinks.map(({ label, href, type }) => {
+									if (type === 'action') {
+										return (
+											<Button
+												key={label}
+												onClick={scrollToFooter}
+												sx={{ textTransform: 'none' }}
+											>
+												{label}
+											</Button>
+										);
+									}
 
+									const isActive = currentPath === href;
 									return (
 										<Link
 											key={label}
@@ -161,7 +176,21 @@ export const Header = () => {
 								</ListItemButton>
 							</>
 						)}
-						{navLinks.map(({ label, href }) => {
+						{navLinks.map(({ label, href, type }) => {
+							if (type === 'action') {
+								return (
+									<ListItemButton
+										key={label}
+										onClick={() => {
+											scrollToFooter?.();
+											toggleDrawer();
+										}}
+									>
+										<ListItemText primary={label} />
+									</ListItemButton>
+								);
+							}
+
 							const isActive = currentPath === href;
 							return (
 								<ListItemButton

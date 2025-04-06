@@ -2,9 +2,13 @@ export const tokenService = {
 	getAccessToken: () => localStorage.getItem('access_token'),
 	getRefreshToken: () => localStorage.getItem('refresh_token'),
 
-	setTokens: ({ access, refresh }: { access: string; refresh: string }) => {
-		localStorage.setItem('access_token', access);
-		localStorage.setItem('refresh_token', refresh);
+	setTokens: ({ access, refresh }: { access: string | null; refresh: string | null }) => {
+		if (access) {
+			localStorage.setItem('access_token', access);
+    }
+		if (refresh) {
+      localStorage.setItem('refresh_token', refresh);
+    }
 	},
 
 	clearTokens: () => {

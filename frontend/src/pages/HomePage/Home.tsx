@@ -11,6 +11,7 @@ export const HomePage = () => {
 	const { mode } = useThemeContext();
 
 	const blocksRef = useRef<HTMLDivElement>(null);
+	const footerRef = useRef<HTMLDivElement>(null);
 
 	const handleScrollDown = () => {
 		if (blocksRef.current) {
@@ -39,12 +40,16 @@ export const HomePage = () => {
 					zIndex: 0,
 				}}
 			/>
-			<Header/>
-			<Hero onScrollDown={handleScrollDown} />
+			<Header scrollToFooter={() => {
+				footerRef.current?.scrollIntoView({behavior: 'smooth'});
+			}}/>
+			<Hero onScrollDown={handleScrollDown}/>
 			<div ref={blocksRef}>
 				<BlocksView/>
 			</div>
-			<Footer/>
+			<footer ref={footerRef}>
+				<Footer/>
+			</footer>
 		</Box>
 	);
 };

@@ -3,6 +3,7 @@ import {api} from '@shared/api';
 import {userActions} from '@entities/User/model/slices';
 import {tokenService} from '@shared/lib/tokenService/tokenService.ts';
 import i18next from 'i18next';
+import {fetchUserData} from '@entities/User/model/services/fetchUserData.ts';
 
 export const login = createAsyncThunk(
 	'auth/login',
@@ -14,6 +15,7 @@ export const login = createAsyncThunk(
 				access: response.data.access,
 				refresh: response.data.refresh,
 			});
+			await thunkAPI.dispatch(fetchUserData());
 			console.log(response);
 		} catch (e: any) {
 			console.log(e.response);
