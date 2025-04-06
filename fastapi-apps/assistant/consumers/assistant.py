@@ -18,7 +18,7 @@ router = APIRouter()
 
 def register_ws_routes(app):
     @app.websocket('/ws/plan/')
-    async def websocket_endpoint(websocket: WebSocket, session: AsyncSession = Depends(db_helper.session_getter)):
+    async def websocket_endpoint(websocket: WebSocket):
         await websocket.accept()
 
         try:
@@ -62,14 +62,15 @@ def register_ws_routes(app):
                 message=message
             )
 
+            # Запуск генерации в фоне — без передачи session
             asyncio.create_task(generate_weekly_plan_for_user(
                 user_data=user_data,
-                session=session,
                 activity=act,
                 week=week
             ))
 
             await websocket.send_json({"detail": "Генерация запущена в фоне..."})
+            await websocket.close()
 
         except WebSocketDisconnect:
             print("Клиент отключился — генерация продолжается в фоне")
