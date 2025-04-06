@@ -4,7 +4,7 @@ on:
   workflow_dispatch
 
 env:
-  SERVER_HOST: 147.45.224.13
+  SERVER_HOST: 109.73.195.254
   SERVER_USER: root
   SERVER_PATH: /root/microservices
 
