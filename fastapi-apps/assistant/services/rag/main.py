@@ -196,17 +196,15 @@ async def prepare_ai_request(activity, presonal_data,  temp_json=None, user_mess
          workout нигде не должен быть пустым.
         Тебе нужно только новые данные создавать на основе переданных персональных данных пользователя, 
          Блюда и тренировки придумывать тебе и немного брать из данных, которые будут идти после двоеточия (можешь не брать отсюда): {{context}}"""
-    elif activity == "editPlan": # редактирование текущего плана
-        # делаем текущий json строкой 
-        temp_json = json.dumps(temp_json)
-        temp_json = temp_json.replace("{", "{{").replace("}", "}}")
-        chat_history = [temp_json]
+    elif activity == "editPlan":
+        # Оригинальный temp_json — сохраняем как данные, не шаблон
+        chat_history = [json.dumps(temp_json)]
 
+        # Подготовка шаблона отдельно, без порчи temp_json
         template = f"""Ты фитнесс-ассисент. Данные пользователя: {"; ".join(f"{k}: {v}" for k, v in presonal_data.items())} 
-        Пользователь написал тебе сообщение с изменением плана. План в истории твоих сообщений с пользователем.
-        Тебе необходимо изменить план в соответсвии с пользователем. Вернуть полный json строго с такой же структурой ключей, это самое важное.
-        Придумай сам блюда или тренировки или можешь брать из контекста: {{context}}
-        """
+        Пользователь отправил сообщение по корректировке плана. Исходный план у тебя в истории.
+        Верни полный json с той же структурой, изменённый по сообщению пользователя. {{context}}"""
+
     elif activity == "createFuturePlan": # создание FuturePlan на основе TodayPlan
         # в качестве промта отправим модели персональные данные пользователя
         user_message = "; ".join(f"{k}: {v}" for k, v in presonal_data.items())
@@ -246,10 +244,7 @@ async def prepare_ai_request(activity, presonal_data,  temp_json=None, user_mess
     except:
         print("GPT прислал НЕ JSON")
         if activity == "editPlan":
-            try:
-                return json.loads(temp_json)
-            except:
-                return {}
+            return temp_json
         else:
             with open('services/rag/cache_plan.json', 'r', encoding='utf-8') as file:
                 return json.load(file)
@@ -266,6 +261,6 @@ async def prepare_ai_request(activity, presonal_data,  temp_json=None, user_mess
         elif activity == "createTodayPlan" or activity == "createFuturePlan": # генерация TodayPlan или FuturePlan
             with open('services/rag/cache_plan.json', 'r', encoding='utf-8') as file:
                 result_json = json.load(file)
-            return result_json # вернуть закешированный план в качестве нового
+            return json.load(file) # вернуть закешированный план в качестве нового
 
 
