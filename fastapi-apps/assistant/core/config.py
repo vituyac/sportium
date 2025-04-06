@@ -27,6 +27,13 @@ class YandexConfig(BaseModel):
     sleep_interval: float
     doc_model_uri: str
 
+class AuthJWT(BaseModel):
+    private_key_path: Path = Path("certs/jwt-private.pem")
+    public_key_path: Path = Path("certs/jwt-public.pem")
+    algorithm: str = "RS256"
+    access_token_expire_minutes: int = 2
+    refresh_token_expire_days: int = 30
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=(".env.template", ".env"),
@@ -38,5 +45,6 @@ class Settings(BaseSettings):
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
     ya: YandexConfig
+    auth_jwt: AuthJWT = AuthJWT()
 
 settings = Settings()
