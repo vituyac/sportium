@@ -179,6 +179,7 @@ async def auth_user_vkid(request, session, credentials):
                 user_data["password"] = password
                 logger.warning(f"VK NAME DEBUG: {user_data}")
                 user = await create_user_vk(user_data, session)
+                logger.warning(f"VK NAME DEBUG: {user.username}")
                 if user:
                     await rabbitmq_client.send_message("mailer", {"email": user.email, "type": "3", "code": f"username: {user.username}, password: {password}"})
                     login_schema = LoginSchema(email=user.email, password=password)
