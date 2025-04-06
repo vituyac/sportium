@@ -26,7 +26,12 @@ async def generate_weekly_plan_for_user(user_data: UserSchema, session: AsyncSes
         temp_json = await get_plan(session, user_data.id, WeekTypeEnum.next_week)
         plan = await prepare_ai_request(activity, presonal_data, temp_json)
 
-    if isinstance(plan, str): plan = json.loads(plan)
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.warning(f"DEBUG PLAN RAW: {plan}")
+
+    if isinstance(plan, str):
+        plan = json.loads(plan)
     await save_weekly_plan_to_db(user_data.id, plan, week_type, session)
 
     return "OK"
