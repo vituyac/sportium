@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from utils.jwt_decode import get_current_token_payload
 from core.schemas import UserSchema
 from core.models import db_helper
-import json
+import json, asyncio
 
 router = APIRouter()
 
@@ -29,7 +29,7 @@ def register_ws_routes(app):
             message = initial_data.get("message", None)
 
             if not access_token or not act:
-                await websocket.send_json({"error": "Missing access token or act"})
+                await websocket.send_json({"detail": "Missing access token or act"})
                 await websocket.close()
                 return
 
@@ -40,17 +40,14 @@ def register_ws_routes(app):
                 missing_fields = [field for field in required_fields if payload.get(field) is None]
 
                 if missing_fields:
-                    await websocket.send_json({
-                        "error": "Вы не до конца заполнили профиль",
-                        "missing_fields": missing_fields
-                    })
+                    await websocket.send_json({"detail": "Вы не до конца заполнили профиль"})
                     await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
                     return
 
             except Exception as e:
                 await websocket.send_json({
-                    "error": "Ошибка при обработке токена",
-                    "details": str(e)
+                    "detail": "Ошибка при обработке токена",
+                    "error": str(e)
                 })
                 await websocket.close()
                 return
@@ -65,20 +62,18 @@ def register_ws_routes(app):
                 message=message
             )
 
-            response = await generate_weekly_plan_for_user(
+            asyncio.create_task(generate_weekly_plan_for_user(
                 user_data=user_data,
                 session=session,
                 activity=act,
-                week=week
-            )
+                week=week,
+                websocket=websocket
+            ))
 
-            if response:
-                await websocket.send_json({"status": "OK"})
-            else:
-                await websocket.send_json({"status": "ERROR"})
+            await websocket.send_json({"detail": "Генерация запущена в фоне..."})
 
         except WebSocketDisconnect:
-            print("❌ WebSocket отключен")
+            print("Клиент отключился — генерация продолжается в фоне")
         except Exception as e:
-            print(f"❗ WebSocket error: {e}")
+            print(f"WebSocket ошибка: {e}")
             await websocket.close(code=1011)
