@@ -16,7 +16,7 @@ def register_ws_routes(app):
                 data = await websocket.receive_json()
                 act = data.get("act")
                 user_data = UserSchema(**data.get("user_data"))
-                await manager.send_personal_message("начал генерацию плана", websocket)
+               
                 response = await generate_weekly_plan_for_user(
                     user_data=user_data,
                     session=session,

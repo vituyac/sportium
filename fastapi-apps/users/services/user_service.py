@@ -11,7 +11,6 @@ from .token_service import create_access_token, create_refresh_token
 from . import token_service as token_crud
 from core.config import settings
 from utils.calculate_fat import *
-import logging
 
 from utils.exceptions import AppError
 
@@ -155,8 +154,6 @@ async def auth_user_vkid(request, session, credentials):
 
         user_info = vk_response.json().get("user", {})
         user_id = int(user_info.get("user_id"))
-        logger = logging.getLogger(__name__)
-        logger.warning(f"VK NAME DEBUG: {user_info.get('first_name')} {user_info.get('last_name')}")
         vk_user = await get_user(session, vk_id=user_id)
 
         if credentials:
@@ -177,9 +174,7 @@ async def auth_user_vkid(request, session, credentials):
 
                 password = generate_code(12, False)
                 user_data["password"] = password
-                logger.warning(f"VK NAME DEBUG: {user_data}")
                 user = await create_user_vk(user_data, session)
-                logger.warning(f"VK NAME DEBUG: {user.first_name}")
                 if user:
                     await rabbitmq_client.send_message("mailer", {"email": user.email, "type": "3", "code": f"username: {user.username}, password: {password}"})
                     login_schema = LoginSchema(email=user.email, password=password)
