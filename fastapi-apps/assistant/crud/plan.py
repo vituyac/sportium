@@ -101,7 +101,10 @@ async def save_weekly_plan_to_db(user_id: int, plan: dict, week_type: WeekTypeEn
     await session.refresh(weekly_plan)
 
 async def get_plan(session, user_id: int, week: str, include_ids: bool = False) -> dict:
-    week_type = WeekTypeEnum.this_week if week == "this" else WeekTypeEnum.next_week
+    if isinstance(week, WeekTypeEnum):
+        week_type = week
+    else:
+        week_type = WeekTypeEnum.this_week if week == "this" else WeekTypeEnum.next_week
 
     result = await session.execute(
         select(WeeklyPlan)
