@@ -5,6 +5,9 @@ from services.rag.main import prepare_ai_request
 from crud.plan import *
 import json
 
+import logging
+logger = logging.getLogger(__name__)
+
 async def generate_weekly_plan_for_user(user_data: UserSchema, session: AsyncSession, activity, week):
 
     presonal_data = {
@@ -19,16 +22,14 @@ async def generate_weekly_plan_for_user(user_data: UserSchema, session: AsyncSes
 
     if activity == "editPlan": 
         temp_json = await get_plan(session, user_data.id, week_type)
+        logger.warning(f"DEBUG PLAN RAW: {temp_json}")
         plan = await prepare_ai_request(activity, presonal_data, temp_json, message)
+        logger.warning(f"DEBUG PLAN RAW: {plan}")
     elif activity == "createTodayPlan":
         plan = await prepare_ai_request(activity, presonal_data)
     else:
         temp_json = await get_plan(session, user_data.id, WeekTypeEnum.next_week)
         plan = await prepare_ai_request(activity, presonal_data, temp_json)
-
-    import logging
-    logger = logging.getLogger(__name__)
-    logger.warning(f"DEBUG PLAN RAW: {plan}")
 
     if isinstance(plan, str):
         plan = json.loads(plan)

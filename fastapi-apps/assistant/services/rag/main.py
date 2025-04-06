@@ -241,17 +241,18 @@ async def prepare_ai_request(activity, presonal_data,  temp_json=None, user_mess
     print(result)
     # преобразуем строку в json-формат
     try:
-        # Убираем кодовые блоки ```json и ```
         result = re.sub(r"^```json|```$", "", result, flags=re.MULTILINE).strip()
         result_json = json.loads(result)
     except:
         print("GPT прислал НЕ JSON")
-        if activity == "editPlan": # редактирование текущего плана - 
-            return temp_json
-        elif activity == "createTodayPlan" or activity == "createFuturePlan": # генерация TodayPlan или FuturePlan
+        if activity == "editPlan":
+            try:
+                return json.loads(temp_json)
+            except:
+                return {}
+        else:
             with open('services/rag/cache_plan.json', 'r', encoding='utf-8') as file:
-                result_json = json.load(file)
-            return result_json # вернуть закешированный план в качестве нового
+                return json.load(file)
     
     check = await check_json(result_json)
    
