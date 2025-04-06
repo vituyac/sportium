@@ -15,20 +15,20 @@ export const CalStatistic: React.FC<CalStatisticProps> = ({ burned, delta, recei
 			<Grid container sx={{textAlign: 'center'}}>
 				<Grid size={4}>
 					<Stack>
-						<Typography variant={'h6'} color={'primary'}>{received} ккал</Typography>
-						<Typography variant={'body2'} color={'primary'}>Получено за <br/> неделю</Typography>
+						<Typography variant={'h6'} color={'primary.dark'}>{received} ккал</Typography>
+						<Typography variant={'body2'} color={'primary.dark'}>Получено за <br/> неделю</Typography>
 					</Stack>
 				</Grid>
 				<Grid size={4}>
 					<Stack>
-						<Typography variant={'h6'} color={'primary'}>{burned} ккал</Typography>
-						<Typography variant={'body2'} color={'primary'}>Ккал <br/> потрачено</Typography>
+						<Typography variant={'h6'} color={'primary.dark'}>{burned} ккал</Typography>
+						<Typography variant={'body2'} color={'primary.dark'}>Ккал <br/> потрачено</Typography>
 					</Stack>
 				</Grid>
 				<Grid size={4}>
 					<Stack>
 						<Typography variant={'h6'} color={'secondary.dark'}>+{delta} ккал</Typography>
-						<Typography variant={'body2'} color={'primary'}>Ккал <br/> Набрано</Typography>
+						<Typography variant={'body2'} color={'primary.dark'}>Ккал <br/> Набрано</Typography>
 					</Stack>
 				</Grid>
 			</Grid>

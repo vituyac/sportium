@@ -6,6 +6,7 @@ import HandsHeart from '@shared/assets/images/hands-heart.svg?react';
 import BackgroundFooter from '@shared/assets/images/footer-bg.png';
 import {FeedbackForm} from '@features/feedback-form/ui/FeedbackForm.tsx';
 import { useTranslation } from 'react-i18next';
+import {LogoLink} from '@shared/ui/LogoLink/LogoLink.tsx';
 
 export const Footer = () =>{
 	const theme = useTheme();
@@ -34,7 +35,7 @@ export const Footer = () =>{
 				<Grid container spacing={4}>
 					<Grid size={{xs: 12, sm: 7}}>
 						<Stack spacing={2}>
-							<Typography>SPORTIUM</Typography>
+							<LogoLink/>
 							<Typography>{t("Данный проект разработан студентами ЛГТУ в рамках хакатона в образовательных и исследовательских целях.")}</Typography>
 							<Typography>{t("Связь с нами:")} </Typography>
 							<Stack direction="row" spacing={2}>

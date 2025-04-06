@@ -90,7 +90,7 @@ const WeeklyPlanGrid: React.FC<WeeklyPlanGridProps> = ({ weekly_plan }) => {
 							<Typography sx={{
 								pb: 1,
 								textAlign: 'center'
-							}} color={'primary'} variant="h6">{weekDaysMap[dayKey]}</Typography>
+							}} color={'primary.dark'} variant="h6">{weekDaysMap[dayKey]}</Typography>
 							<CalStatistic
 								burned={dayData.calories_summary.burned}
 								delta={dayData.calories_summary.delta}
@@ -104,7 +104,7 @@ const WeeklyPlanGrid: React.FC<WeeklyPlanGridProps> = ({ weekly_plan }) => {
 			<Dialog open={!!selectedDay} onClose={handleClose}>
 				<DialogTitle>
 					<Stack>
-						<Typography sx={{pb: 1, textAlign: 'center'}} variant={'h5'}>{selectedDay?.dayName}</Typography>
+						<Typography color={'primary.dark'} sx={{pb: 1, textAlign: 'center'}} variant={'h5'}>{selectedDay?.dayName}</Typography>
 						<CalStatistic
 							burned={selectedDay?.dayData.calories_summary.burned ? selectedDay.dayData.calories_summary.burned : 0}
 							delta={selectedDay?.dayData.calories_summary.delta ? selectedDay.dayData.calories_summary.delta : 0}
@@ -118,7 +118,7 @@ const WeeklyPlanGrid: React.FC<WeeklyPlanGridProps> = ({ weekly_plan }) => {
 							<Typography color={'secondary.dark'} variant="h6" sx={{pb: 1, textAlign: 'center'}}>Приёмы пищи</Typography>
 							{Object.entries(selectedDay.dayData.meals).map(([mealType, meals]) => (
 								<Stack key={mealType} style={{ marginBottom: 10 }} spacing={1}>
-									<Typography variant="subtitle1"><b>{mealTypeMap[mealType] || mealType}:</b></Typography>
+									<Typography color={'primary.dark'} variant="subtitle1"><b>{mealTypeMap[mealType] || mealType}:</b></Typography>
 									{meals.map((meal) => (
 										<WorkoutBlock key={meal.id} checked={meal.is_done} title={`${meal.dish} — ${meal.calories} ккал`}/>
 									))}
@@ -128,7 +128,7 @@ const WeeklyPlanGrid: React.FC<WeeklyPlanGridProps> = ({ weekly_plan }) => {
 							<Typography color={'secondary.dark'} variant="h6" sx={{pb: 1, textAlign: 'center'}}>Тренировки</Typography>
 							{selectedDay.dayData.workout.map((work, idx) => (
 								<Stack key={idx} style={{ marginBottom: 10 }} spacing={1}>
-									<Typography variant="subtitle1"><b>{work.category}:</b></Typography>
+									<Typography color={'primary.dark'} variant="subtitle1"><b>{work.category}:</b></Typography>
 									{work.tasks.map((task) => (
 										<WorkoutBlock key={task.id} checked={task.is_done} title={`${task.task} — ${task.burned_calories} ккал`}/>
 									))}
