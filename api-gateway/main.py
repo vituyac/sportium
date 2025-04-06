@@ -4,7 +4,7 @@ import uvicorn
 from api import router as api_router
 from core.config import settings
 from fastapi.middleware.cors import CORSMiddleware
-from consumers.assistant import register_ws_routes
+# from consumers.assistant import register_ws_routes
 
 app = FastAPI(
     default_response_class=ORJSONResponse,
