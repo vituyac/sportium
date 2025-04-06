@@ -21,7 +21,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-register_ws_routes(app)
+# register_ws_routes(app)
 
 app.include_router(
     api_router,
