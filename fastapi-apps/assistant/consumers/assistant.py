@@ -17,10 +17,9 @@ import json, asyncio
 router = APIRouter()
 
 def register_ws_routes(app):
-    @app.websocket('/ws/plan/')
+    @app.websocket("/ws/plan/")
     async def websocket_endpoint(websocket: WebSocket):
         await websocket.accept()
-
         try:
             initial_data = await websocket.receive_json()
             access_token = initial_data.get("access")
@@ -33,6 +32,7 @@ def register_ws_routes(app):
                 await websocket.close()
                 return
 
+            # Валидация токена и необходимых полей
             try:
                 payload = get_current_token_payload(access_token)
                 required_fields = ["age", "height", "weight", "training_goal", "sex"]
@@ -48,6 +48,7 @@ def register_ws_routes(app):
                 await websocket.close()
                 return
 
+            # Формируем объект пользователя
             user_data = UserSchema(
                 id=payload["sub"],
                 age=payload["age"],
@@ -55,9 +56,10 @@ def register_ws_routes(app):
                 weight=str(payload["weight"]),
                 training_goal=payload["training_goal"],
                 sex=payload["sex"],
-                message=message
+                message=message,
             )
 
+            # Генерация (или редактирование) плана
             await generate_weekly_plan_for_user(
                 user_data=user_data,
                 activity=act,
@@ -65,6 +67,7 @@ def register_ws_routes(app):
                 websocket=websocket
             )
 
+            # Сообщаем об окончании
             await websocket.send_json({"detail": "ok"})
             await websocket.close()
 
