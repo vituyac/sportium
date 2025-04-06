@@ -66,8 +66,7 @@ def register_ws_routes(app):
                 user_data=user_data,
                 session=session,
                 activity=act,
-                week=week,
-                websocket=websocket
+                week=week
             ))
 
             await websocket.send_json({"detail": "Генерация запущена в фоне..."})
