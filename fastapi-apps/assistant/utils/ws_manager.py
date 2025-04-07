@@ -11,7 +11,7 @@ class Manager:
     def disconnect(self, websocket: WebSocket):
         self.connections.remove(websocket)
 
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
+    async def send_json(self, message: str, websocket: WebSocket):
+        await websocket.send_json(message)
 
 manager = Manager()

@@ -19,67 +19,62 @@ router = APIRouter()
 def register_ws_routes(app):
     @app.websocket("/ws/plan/")
     async def websocket_endpoint(websocket: WebSocket):
-        # Примем соединение
-        await websocket.accept()
+        await manager.connect(websocket)
+        session = await db_helper.session_getter()
         try:
-            # Получим входные данные
-            initial_data = await websocket.receive_json()
-            access_token = initial_data.get("access")
-            act = initial_data.get("act")
-            week = initial_data.get("week", "this")
-            message = initial_data.get("message", None)
+            data = await websocket.receive_json()
+            access_token = data.get("access")
+            act = data.get("act")
+            week = data.get("week", "this")
+            message = data.get("message", None)
 
             if not access_token or not act:
-                await websocket.send_json({"detail": "Missing access token or act"})
-                await websocket.close()
+                await manager.send_json({"detail": "Missing access token, act or week"}, websocket)
+                manager.disconnect(websocket)
                 return
 
-            # Проверим токен
             try:
                 payload = get_current_token_payload(access_token)
                 required_fields = ["age", "height", "weight", "training_goal", "sex"]
                 missing_fields = [field for field in required_fields if payload.get(field) is None]
 
                 if missing_fields:
-                    await websocket.send_json({"detail": "Вы не до конца заполнили профиль"})
-                    await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+                    await manager.send_json({"detail": "Вы не до конца заполнили профиль"}, websocket)
+                    await manager.disconnect(websocket)
                     return
-
+                
+                user_data = UserSchema(
+                    id=payload["sub"],
+                    age=payload["age"],
+                    height=str(payload["height"]),
+                    weight=str(payload["weight"]),
+                    training_goal=payload["training_goal"],
+                    sex=payload["sex"],
+                    message=message,
+                )
+                
             except Exception:
-                await websocket.send_json({"detail": "Ошибка при обработке токена"})
-                await websocket.close()
+                await manager.send_json({"detail": "Ошибка при обработке токена"}, websocket)
+                await manager.disconnect(websocket)
                 return
 
-            # Собираем данные пользователя
-            user_data = UserSchema(
-                id=payload["sub"],
-                age=payload["age"],
-                height=str(payload["height"]),
-                weight=str(payload["weight"]),
-                training_goal=payload["training_goal"],
-                sex=payload["sex"],
-                message=message,
-            )
+            try:
+                plan = await generate_weekly_plan_for_user(
+                    user_data=user_data,
+                    activity=act,
+                    week=week,
+                    session=session
+                )
+                await manager.send_json({"detail": "План успешно сгенерирован"}, websocket)
+                await manager.disconnect(websocket)
 
-            # Вызываем нашу функцию генерации
-            plan = await generate_weekly_plan_for_user(
-                user_data=user_data,
-                activity=act,
-                week=week
-            )
-
-            # Если всё прошло нормально, сообщаем об успехе
-            await websocket.send_json({"detail": "План успешно сгенерирован", "plan": plan})
-            await websocket.close()
+            except Exception:
+                await manager.send_json({"detail": "Ошибка при генерации плана"}, websocket)
+                await manager.disconnect(websocket)
+                return
 
         except WebSocketDisconnect:
-            # Если клиент закрыл соединение — просто прекращаем работу
-            print("Клиент отключился — генерация остановлена")
+            pass
         except Exception as e:
-            print(f"WebSocket ошибка: {e}")
-            # Отправляем ошибку на клиент (если он ещё не отключился)
-            try:
-                await websocket.send_json({"detail": f"Ошибка: {str(e)}"})
-            except:
-                pass
-            await websocket.close(code=1011)
+            await manager.send_json({"detail": {str(e)}}, websocket)
+            await manager.disconnect(websocket)

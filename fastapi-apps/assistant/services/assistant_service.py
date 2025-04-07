@@ -3,18 +3,15 @@ from services.rag.main import prepare_ai_request
 from crud.plan import *
 import json
 
-async def generate_weekly_plan_for_user(user_data, activity, week):
+async def generate_weekly_plan_for_user(user_data, activity, week, session):
 
-    session_gen = db_helper.session_getter()
-    session = await session_gen.__anext__()
-    
     try:
         personal_data = {
             "sex": user_data.sex,
             "age": user_data.age,
             "height": user_data.height,
             "weight": user_data.weight,
-            "training_goal": user_data.training_goal,
+            "training_goal": user_data.training_goal
         }
 
         message = user_data.message or None
@@ -38,6 +35,4 @@ async def generate_weekly_plan_for_user(user_data, activity, week):
 
     except Exception as e:
         raise e
-    finally:
-        await session_gen.aclose()
     
