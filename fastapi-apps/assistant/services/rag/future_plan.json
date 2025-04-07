@@ -1,0 +1,516 @@
+{
+  "weekly_plan": {
+    "monday": {
+      "meals": {
+        "breakfast_1": [
+          {
+            "dish": "Овсянка с ягодами",
+            "calories": 250
+          }
+        ],
+        "breakfast_2": [
+          {
+            "dish": "Творог с мёдом",
+            "calories": 180
+          },
+          {
+            "dish": "Яблоко",
+            "calories": 95
+          }
+        ],
+        "lunch": [
+          {
+            "dish": "Куриная грудка с овощами",
+            "calories": 350
+          },
+          {
+            "dish": "Салат из свежих овощей",
+            "calories": 120
+          }
+        ],
+        "snack": [
+          {
+            "dish": "Грейпфрут",
+            "calories": 80
+          }
+        ],
+        "dinner": [
+          {
+            "dish": "Рыба на пару с овощами",
+            "calories": 400
+          },
+          {
+            "dish": "Зелёный горошек",
+            "calories": 150
+          }
+        ]
+      },
+      "workout": [
+        {
+          "category": "Кардио тренировка",
+          "tasks": [
+            {
+              "task": "Бег на беговой дорожке",
+              "burned_calories": 300
+            },
+            {
+              "task": "Эллиптический тренажёр",
+              "burned_calories": 200
+            }
+          ]
+        },
+        {
+          "category": "Силовая тренировка",
+          "tasks": [
+            {
+              "task": "Приседания со штангой",
+              "burned_calories": 150
+            },
+            {
+              "task": "Жим гантелей лёжа",
+              "burned_calories": 100
+            }
+          ]
+        }
+      ]
+    },
+    "tuesday": {
+      "meals": {
+        "breakfast_1": [
+          {
+            "dish": "Омлет с овощами",
+            "calories": 280
+          },
+          {
+            "dish": "Тост с авокадо",
+            "calories": 160
+          }
+        ],
+        "breakfast_2": [
+          {
+            "dish": "Йогурт с орехами",
+            "calories": 200
+          },
+          {
+            "dish": "Груша",
+            "calories": 100
+          }
+        ],
+        "lunch": [
+          {
+            "dish": "Говядина тушёная с овощами",
+            "calories": 450
+          },
+          {
+            "dish": "Гречка",
+            "calories": 220
+          }
+        ],
+        "snack": [
+          {
+            "dish": "Морковь с хумусом",
+            "calories": 150
+          },
+          {
+            "dish": "Свёкла",
+            "calories": 70
+          }
+        ],
+        "dinner": [
+          {
+            "dish": "Индейка на пару с брокколи",
+            "calories": 380
+          }
+        ]
+      },
+      "workout": [
+        {
+          "category": "Йога",
+          "tasks": [
+            {
+              "task": "Асаны для гибкости",
+              "burned_calories": 150
+            }
+          ]
+        },
+        {
+          "category": "Силовая тренировка",
+          "tasks": [
+            {
+              "task": "Подтягивания",
+              "burned_calories": 100
+            },
+            {
+              "task": "Отжимания",
+              "burned_calories": 120
+            }
+          ]
+        }
+      ]
+    },
+    "wednesday": {
+      "meals": {
+        "breakfast_1": [
+          {
+            "dish": "Смузи банан-ягоды",
+            "calories": 260
+          }
+        ],
+        "breakfast_2": [
+          {
+            "dish": "Сырники с мёдом",
+            "calories": 240
+          }
+        ],
+        "lunch": [
+          {
+            "dish": "Тунец с овощами",
+            "calories": 370
+          },
+          {
+            "dish": "Рис",
+            "calories": 200
+          }
+        ],
+        "snack": [
+          {
+            "dish": "Кефир с мёдом",
+            "calories": 130
+          },
+          {
+            "dish": "Орехи",
+            "calories": 180
+          }
+        ],
+        "dinner": [
+          {
+            "dish": "Запечённая курица с картофелем",
+            "calories": 420
+          },
+          {
+            "dish": "Стручковая фасоль",
+            "calories": 140
+          },
+          {
+            "dish": "Салат из помидоров и огурцов",
+            "calories": 110
+          }
+        ]
+      },
+      "workout": [
+        {
+          "category": "Плавание",
+          "tasks": [
+            {
+              "task": "Кроль",
+              "burned_calories": 320
+            },
+            {
+              "task": "На спине",
+              "burned_calories": 230
+            }
+          ]
+        },
+        {
+          "category": "Силовая тренировка",
+          "tasks": [
+            {
+              "task": "Становая тяга",
+              "burned_calories": 170
+            }
+          ]
+        }
+      ]
+    },
+    "thursday": {
+      "meals": {
+        "breakfast_1": [
+          {
+            "dish": "Гречневая каша с молоком",
+            "calories": 270
+          }
+        ],
+        "breakfast_2": [
+          {
+            "dish": "Бутерброд с ветчиной",
+            "calories": 210
+          },
+          {
+            "dish": "Апельсин",
+            "calories": 85
+          },
+          {
+            "dish": "Чай без сахара",
+            "calories": 0
+          }
+        ],
+        "lunch": [
+          {
+            "dish": "Борщ с говядиной",
+            "calories": 430
+          },
+          {
+            "dish": "Хлеб",
+            "calories": 190
+          }
+        ],
+        "snack": [
+          {
+            "dish": "Виноград",
+            "calories": 160
+          }
+        ],
+        "dinner": [
+          {
+            "dish": "Паровая рыба с овощами",
+            "calories": 500
+          },
+          {
+            "dish": "Брокколи",
+            "calories": 180
+          },
+          {
+            "dish": "Салат из огурцов и помидоров",
+            "calories": 130
+          }
+        ]
+      },
+      "workout": [
+        {
+          "category": "Кардиотренировка",
+          "tasks": [
+            {
+              "task": "Быстрая ходьба и мьюинг",
+              "burned_calories": 280
+            },
+            {
+              "task": "Велосипед",
+              "burned_calories": 250
+            }
+          ]
+        }
+      ]
+    },
+    "friday": {
+      "meals": {
+        "breakfast_1": [
+          {
+            "dish": "Оладьи с мёдом и обоюнда",
+            "calories": 300
+          },
+          {
+            "dish": "Чай без сахара",
+            "calories": 0
+          },
+          {
+            "dish": "Банан",
+            "calories": 110
+          }
+        ],
+        "breakfast_2": [
+          {
+            "dish": "Творожная запеканка",
+            "calories": 290
+          },
+          {
+            "dish": "Мюсли",
+            "calories": 220
+          },
+          {
+            "dish": "Киви",
+            "calories": 90
+          }
+        ],
+        "lunch": [
+          {
+            "dish": "Суп с фрикадельками",
+            "calories": 440
+          }
+        ],
+        "snack": [
+          {
+            "dish": "Ананас",
+            "calories": 140
+          }
+        ],
+        "dinner": [
+          {
+            "dish": "Запечённая индейка с овощами",
+            "calories": 480
+          }
+        ]
+      },
+      "workout": [
+        {
+          "category": "Силовая тренировка",
+          "tasks": [
+            {
+              "task": "Жим гантелей стоя вместе с crocodildo",
+              "burned_calories": 160
+            },
+            {
+              "task": "Тяга гантелей в наклоне",
+              "burned_calories": 140
+            }
+          ]
+        },
+        {
+          "category": "Растяжка",
+          "tasks": [
+            {
+              "task": "Растяжка мышц ног",
+              "burned_calories": 100
+            }
+          ]
+        }
+      ]
+    },
+    "saturday": {
+      "meals": {
+        "breakfast_1": [
+          {
+            "dish": "Рисовая каша с фруктами",
+            "calories": 290
+          }
+        ],
+        "breakfast_2": [
+          {
+            "dish": "Йогурт с мёдом",
+            "calories": 200
+          },
+          {
+            "dish": "Смузи банан-ягоды",
+            "calories": 260
+          }
+        ],
+        "lunch": [
+          {
+            "dish": "Куриный суп с лапшой",
+            "calories": 460
+          },
+          {
+            "dish": "Салат из капусты",
+            "calories": 120
+          }
+        ],
+        "snack": [
+          {
+            "dish": "Клубника",
+            "calories": 150
+          }
+        ],
+        "dinner": [
+          {
+            "dish": "Тушёная говядина с овощами",
+            "calories": 520
+          },
+          {
+            "dish": "Картофель",
+            "calories": 230
+          },
+          {
+            "dish": "Салат из огурцов",
+            "calories": 110
+          }
+        ]
+      },
+      "workout": [
+        {
+          "category": "Кардиотренировка",
+          "tasks": [
+            {
+              "task": "Бег на беговой дорожке",
+              "burned_calories": 310
+            },
+            {
+              "task": "Эллиптический тренажёр",
+              "burned_calories": 220
+            }
+          ]
+        }
+      ]
+    },
+    "sunday": {
+      "meals": {
+        "breakfast_1": [
+          {
+            "dish": "Омлет с томатами",
+            "calories": 310
+          },
+          {
+            "dish": "Тост с маслом",
+            "calories": 170
+          },
+          {
+            "dish": "Кофе без сахара",
+            "calories": 0
+          }
+        ],
+        "breakfast_2": [
+          {
+            "dish": "Фруктовый салат",
+            "calories": 250
+          }
+        ],
+        "lunch": [
+          {
+            "dish": "Паста с томатным соусом",
+            "calories": 490
+          },
+          {
+            "dish": "Салат из помидоров и огурцов",
+            "calories": 130
+          },
+          {
+            "dish": "Хлеб",
+            "calories": 190
+          }
+        ],
+        "snack": [
+          {
+            "dish": "Апельсин",
+            "calories": 85
+          },
+          {
+            "dish": "Хурмичка",
+            "calories": 120
+          },
+          {
+            "dish": "Киви",
+            "calories": 90
+          }
+        ],
+        "dinner": [
+          {
+            "dish": "Запечённая рыба с овощами",
+            "calories": 550
+          }
+        ]
+      },
+      "workout": [
+        {
+          "category": "Растяжка",
+          "tasks": [
+            {
+              "task": "Растяжка мышц спины",
+              "burned_calories": 110
+            }
+          ]
+        },
+        {
+          "category": "Силовая тренировка",
+          "tasks": [
+            {
+              "task": "Приседания с гантелями",
+              "burned_calories": 180
+            },
+            {
+              "task": "Жим гантелей сидя",
+              "burned_calories": 150
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
