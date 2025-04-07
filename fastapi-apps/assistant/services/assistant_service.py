@@ -1,24 +1,13 @@
-from sqlalchemy.ext.asyncio import AsyncSession
 from core.models import WeekTypeEnum, db_helper
-from core.schemas import UserSchema
 from services.rag.main import prepare_ai_request
 from crud.plan import *
 import json
 
-import logging
-logger = logging.getLogger(__name__)
-
 async def generate_weekly_plan_for_user(user_data, activity, week):
-    """
-    Упрощённая функция, которая:
-    1. Берёт сессию из async-генератора.
-    2. Генерирует / редактирует план.
-    3. Сохраняет план в БД.
-    """
-    # Получаем "контекст" (наш async-генератор)
+
     session_gen = db_helper.session_getter()
-    # Забираем первую (и единственную) выдачу - объект сессии
     session = await session_gen.__anext__()
+    
     try:
         personal_data = {
             "sex": user_data.sex,
@@ -43,15 +32,12 @@ async def generate_weekly_plan_for_user(user_data, activity, week):
         if isinstance(plan, str):
             plan = json.loads(plan)
 
-        # Сохраняем в БД
         await save_weekly_plan_to_db(user_data.id, plan, week_type, session)
 
         return plan
 
     except Exception as e:
-        # Пробрасываем ошибку, чтобы обработать её вне функции
         raise e
     finally:
-        # Закрываем наш async-генератор
         await session_gen.aclose()
     
