@@ -195,7 +195,7 @@ async def prepare_ai_request(activity, presonal_data,  temp_json=None, user_mess
         calories - сколько калорий содержится в данном приеме пищи. tasks - массив с упражнениями на данную категорию. task в tasks может быть от 1 до 2, category в workout тоже от 1 до 2 делаем, dish в приеме пищи тоже от 1 до 2. 
          workout нигде не должен быть пустым.
         Тебе нужно только новые данные создавать на основе переданных персональных данных пользователя, 
-         Блюда и тренировки придумывать тебе и немного брать из данных, которые будут идти после двоеточия (можешь не брать отсюда): {{context}}"""
+         Блюда и тренировки придумывать тебе и немного брать из данных, которые будут идти после двоеточия: {{context}}"""
     elif activity == "editPlan":
         # Оригинальный temp_json — сохраняем как данные, не шаблон
         chat_history = [json.dumps(temp_json)]
@@ -212,11 +212,11 @@ async def prepare_ai_request(activity, presonal_data,  temp_json=None, user_mess
         chat_history = []
 
         # делаем json строкой
-        temp_json = json.dumps(temp_json)
-        temp_json = temp_json.replace("{", "{{").replace("}", "}}")
+        temp_json_str = json.dumps(temp_json)
+        temp_json_str = temp_json.replace("{", "{{").replace("}", "}}")
 
         template = f"""Ты фитнес-ассистент. Тебе нужно составить недельный план тренировок и питания на основе следующих персональных данных: возраста, роста, веса, цели и пола, 
-        а также учитывая данные из прошлого недельного плана в формате JSON: {temp_json}. 
+        а также учитывая данные из прошлого недельного плана в формате JSON: {temp_json_str}. 
         План должен быть сформирован по строгой структуре, которая представлена в прошлом плане JSON.
         1. category — категория упражнения или тип пищи (не изменяй ключи и не создавай новых).
         2. tasks — список упражнений для данной категории на конкретный день.
@@ -228,15 +228,15 @@ async def prepare_ai_request(activity, presonal_data,  temp_json=None, user_mess
         - Типы блюд и категории упражнений должны быть уникальными и совершенно новыми по сравнению с предыдущими (не похожими).
         - Вся информация должна быть сгенерирована тобой или основана на следующих данных (смотри контекст): {{context}}.
         """
-    # отправляем запрос к модели
-    try:
-        result = await asyncio.wait_for(ai_request(user_message, template, chat_history), timeout=60.0)
-    except asyncio.TimeoutError:
-        print("GPT отвечал дольше 1 минуты")
-        result = ''
+    # отправляем запрос к модели - убрали для тестов
+    # try:
+    #     result = await asyncio.wait_for(ai_request(user_message, template, chat_history), timeout=60.0)
+    # except asyncio.TimeoutError:
+    #     print("GPT отвечал дольше 1 минуты")
+    #     result = ''
 
-    print("Ответ GPT:")
-    print(result)
+    result = 'заглушка'
+    
     # преобразуем строку в json-формат
     try:
         result = re.sub(r"^```json|```$", "", result, flags=re.MULTILINE).strip()
@@ -245,10 +245,14 @@ async def prepare_ai_request(activity, presonal_data,  temp_json=None, user_mess
         print("GPT прислал НЕ JSON")
         if activity == "editPlan":
             return temp_json
-        else:
-            with open('services/rag/cache_plan.json', 'r', encoding='utf-8') as file:
+        elif activity == "createTodayPlan":
+            with open('services/rag/today_plan.json', 'r', encoding='utf-8') as file:
                 return json.load(file)
-    
+        else:
+            with open('services/rag/future_plan.json', 'r', encoding='utf-8') as file:
+                return json.load(file)
+            
+    # до этого не доходим из-за отсуствия запроса в модель и получения из нее JSON
     check = await check_json(result_json)
    
     if check:
