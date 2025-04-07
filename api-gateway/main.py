@@ -4,7 +4,6 @@ import uvicorn
 from api import router as api_router
 from core.config import settings
 from fastapi.middleware.cors import CORSMiddleware
-# from consumers.assistant import register_ws_routes
 
 app = FastAPI(
     default_response_class=ORJSONResponse,
@@ -15,13 +14,11 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://crocodailo.ru", "http://localhost"],
+    allow_origins=["http://localhost:5173", "http://localhost"], # Добавьте домен
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
 )
-
-# register_ws_routes(app)
 
 app.include_router(
     api_router,

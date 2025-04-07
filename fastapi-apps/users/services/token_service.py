@@ -103,7 +103,6 @@ async def get_current_active_auth_user(token_type: str, credentials, session):
     if user.is_active:
         return user
     raise AppError(error_code="TOKEN_INVALID", status_code=403)
-    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="inactive user")
 
 
 

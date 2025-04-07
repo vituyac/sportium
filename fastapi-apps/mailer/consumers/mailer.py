@@ -8,10 +8,8 @@ from email.mime.multipart import MIMEMultipart
 from jinja2 import Template
 from core.config import settings
 
-
 async def load_template(template_name: str, code: str) -> str:
-    # путь к шаблонам
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # папка 'mailer'
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     TEMPLATES_DIR = os.path.join(BASE_DIR, 'static', 'templates')
     template_path = os.path.join(TEMPLATES_DIR, template_name)
 
@@ -20,8 +18,7 @@ async def load_template(template_name: str, code: str) -> str:
     return template.render(code=code)
 
 async def send_email(recipient_email: str, code: str, email_type: int):
-
-    # Определяем шаблон и тему письма
+    
     if email_type == 1:
         template_name = "confirm_registration.html"
         subject = "Подтверждение регистрации Sportium"
@@ -32,10 +29,8 @@ async def send_email(recipient_email: str, code: str, email_type: int):
         template_name = "vk_registration.html"
         subject = "Данные от аккаунта Sportium"
 
-    # Загружаем и рендерим шаблон
     html_content = await load_template(template_name, code)
 
-    # Создаем MIME сообщение
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"] = settings.smtp.email

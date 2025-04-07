@@ -29,4 +29,4 @@ def generate_avatar(initials: str):
 
     img.save(path)
 
-    return f"https://crocodailo.ru/api/users/{path}"
+    return f"/api/users/{path}"
