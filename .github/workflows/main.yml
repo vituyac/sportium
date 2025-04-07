@@ -1,12 +1,12 @@
-name: Deploy
+name: deploy
 
 on:
   workflow_dispatch
 
 env:
-  SERVER_HOST: 109.73.195.254
+  SERVER_HOST: # ip адрес сервера
   SERVER_USER: root
-  SERVER_PATH: /root/microservices
+  SERVER_PATH: /root/project
 
 jobs:
   deploy:

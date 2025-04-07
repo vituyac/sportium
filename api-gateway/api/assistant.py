@@ -1,19 +1,12 @@
-from fastapi import Request, HTTPException, Header, APIRouter, Response, File, UploadFile
+from fastapi import Request, HTTPException, Header, APIRouter
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.security import HTTPBearer
 import httpx, re
 
 from core.config import SERVICES
 from utils.jwt_decode import *
-from services.proxy import proxy_post_request, proxy_get_request
 
 http_bearer = HTTPBearer(auto_error=False)
-router = APIRouter()
-
-import asyncio, json
-import websockets
-from fastapi import WebSocket, WebSocketDisconnect, APIRouter
-from utils.jwt_decode import *
 router = APIRouter()
 
 @router.post("/plan/")

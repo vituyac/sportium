@@ -72,7 +72,7 @@ async def user_edit_avatar(file, user, session: AsyncSession) -> str:
     file_path = f"{UPLOAD_DIR}{generate_code(16)}{user.id}.{file_extension}"
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-    user.image = f"https://crocodailo.ru/api/users/{file_path}"
+    user.image = f"api/users/{file_path}"
     session.add(user)
     await session.commit()
     return user.image

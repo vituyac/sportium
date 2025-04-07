@@ -131,26 +131,6 @@ async def reset_password(request: Request):
         f"{SERVICES['users']}/api/users/reset-password/"
     )
 
-# @router.get("/me/me/")
-# async def user_dataa(payload: dict = Depends(is_admin)):
-#     print(payload)
-#     return payload
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @router.get("/docs/")
 async def proxy_docs(request: Request):
 
